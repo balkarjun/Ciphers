@@ -9,9 +9,13 @@ import SwiftUI
 
 struct PigpenText: View {
     private let text: String
+    private let highlighted: String
+    private let replaced: Set<String>
     
-    init(_ text: String) {
+    init(_ text: String, highlighted: String = "", replaced: Set<String> = []) {
         self.text = text
+        self.highlighted = highlighted
+        self.replaced = replaced
     }
     
     private let charWidth: Double = 20
@@ -31,7 +35,7 @@ struct PigpenText: View {
     }
     // splits the text into an array of characters for each line
     private var rowText: [[String]] {
-        return Array(text.map { String($0) }).chunked(into: lineLength)
+        return Array(text.uppercased().map { String($0) }).chunked(into: lineLength)
     }
     
     var body: some View {
@@ -39,12 +43,22 @@ struct PigpenText: View {
             ForEach(rowText, id: \.self) { line in
                 HStack(spacing: kerning) {
                     ForEach(line, id: \.self) { char in
-                        if String(char) == " " {
-                            BlankSpaceCharacter
-                        } else if String(char) == "," {
-                            CommaCharacter
-                        } else {
-                            PigpenCharacter(String(char))
+                        VStack(spacing: lineSpacing/2) {
+                            let isCompleted = replaced.contains(String(char))
+                            
+                            
+                            Text(String(char))
+                                .font(.body.weight(.semibold))
+                                .opacity(isCompleted ? 1 : 0)
+                            
+                            if String(char) == " " {
+                                BlankSpaceCharacter
+                            } else if String(char) == "," {
+                                CommaCharacter
+                            } else {
+                                PigpenCharacter(String(char), lineColor: (isCompleted ? .secondary : .primary))
+                                    .background(String(char) == highlighted ? .green.opacity(0.6) : .clear)
+                            }
                         }
                     }
                 }
