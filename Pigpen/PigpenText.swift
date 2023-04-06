@@ -11,11 +11,13 @@ struct PigpenText: View {
     private let text: String
     private let highlighted: String
     private let replaced: Set<String>
+    private let lineColor: Color
     
-    init(_ text: String, highlighted: String = "", replaced: Set<String> = []) {
+    init(_ text: String, highlighted: String = "", replaced: Set<String> = [], lineColor: Color = .primary) {
         self.text = text
         self.highlighted = highlighted
         self.replaced = replaced
+        self.lineColor = lineColor
     }
     
     private let charWidth: Double = 20
@@ -45,19 +47,21 @@ struct PigpenText: View {
                     ForEach(line, id: \.self) { char in
                         VStack(spacing: lineSpacing/2) {
                             let isCompleted = replaced.contains(String(char))
-                            
-                            
-                            Text(String(char))
-                                .font(.body.weight(.semibold))
-                                .opacity(isCompleted ? 1 : 0)
+                            let isHighlighted = (String(char)) == highlighted
                             
                             if String(char) == " " {
                                 BlankSpaceCharacter
                             } else if String(char) == "," {
                                 CommaCharacter
                             } else {
-                                PigpenCharacter(String(char), lineColor: (isCompleted ? .secondary : .primary))
-                                    .background(String(char) == highlighted ? .green.opacity(0.6) : .clear)
+                                if isCompleted {
+                                    Text(String(char))
+                                        .font(.title2.weight(.semibold))
+                                        .frame(width: charWidth, height: charHeight)
+                                } else {
+                                    PigpenCharacter(String(char), lineColor: lineColor)
+                                        .background(isHighlighted ? .green.opacity(0.6) : .clear)
+                                }
                             }
                         }
                     }
