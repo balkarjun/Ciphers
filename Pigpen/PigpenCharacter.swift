@@ -55,10 +55,14 @@ let PigDirections: [String : Set<PigDirection>] = [
 struct PigpenCharacter: View {
     private let character: String
     private let lineColor: Color
+    private let charWidth: Double
+    private let charHeight: Double
     
-    init(_ character: String, lineColor: Color = .black) {
+    init(_ character: String, lineColor: Color = .black, charWidth: Double = 20, charHeight: Double = 20) {
         self.character = character.uppercased()
         self.lineColor = lineColor
+        self.charWidth = charWidth
+        self.charHeight = charHeight
     }
     
     private var isSquare: Bool {
@@ -82,13 +86,18 @@ struct PigpenCharacter: View {
         }
     }
     
-    private let lineWidth: Double = 2
-    private let dotSize: Double = 4
+    private var lineWidth: Double {
+        charWidth / 10
+    }
+    
+    private var dotSize: Double {
+        charWidth / 5
+    }
     
     var body: some View {
         Rectangle()
             .fill(.clear)
-            .frame(width: 20, height: 20)
+            .frame(width: charWidth, height: charHeight)
             .overlay {
                 ZStack {
                     Rectangle()
