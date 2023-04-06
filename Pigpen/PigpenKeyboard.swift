@@ -13,13 +13,15 @@ struct PigpenSquareKeyboard: View {
     let characters: [String]
     var dotted: Bool = false
     
-    private let width: Double = 240
-    private let height: Double = 240
+    private let width: Double = 200
+    private let height: Double = 200
     private let dotSize: Double = 7
+    
+    private let primaryColor: Color = .primary
     
     var body: some View {
         Rectangle()
-            .fill(.quaternary.opacity(0.5))
+            .fill(.clear)
             .frame(width: width, height: height)
             .overlay {
                 ForEach(Array(characters.enumerated()), id: \.offset) { index, character in
@@ -34,39 +36,40 @@ struct PigpenSquareKeyboard: View {
                     } label: {
                         ZStack {
                             Text(character)
-                                .font(.title2.bold())
+                                .font(.title2.bold().monospaced())
                                 .foregroundColor(.primary)
                                 .frame(width: width/3, height: height/3)
                             
                             Circle()
-                                .fill(.black.opacity(0.8))
+                                .fill(primaryColor.opacity(0.8))
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(dotted ? 1 : 0)
                                 .offset(x: width/12)
                         }
+                        .background(Color.accentColor.opacity(0.1))
                     }
                     .offset(x: xOffset, y: yOffset)
                 }
             }
             .overlay {
                 Rectangle()
-                    .fill(.black)
+                    .fill(Color.accentColor.opacity(0.7))
                     .frame(width: 3)
                     .offset(x: -width/6)
                 Rectangle()
-                    .fill(.black)
+                    .fill(Color.accentColor.opacity(0.7))
                     .frame(width: 3)
                     .offset(x: width/6)
                 Rectangle()
-                    .fill(.black)
+                    .fill(Color.accentColor.opacity(0.7))
                     .frame(height: 3)
                     .offset(y: -height/6)
                 Rectangle()
-                    .fill(.black)
+                    .fill(Color.accentColor.opacity(0.7))
                     .frame(height: 3)
                     .offset(y: height/6)
             }
-            .cornerRadius(8)
+            .cornerRadius(12)
     }
 }
 
@@ -89,13 +92,15 @@ struct PigpenTriangleKeyboard: View {
         return CGSize(width: 0, height: -32)
     }
     
-    private let width: Double = 240
-    private let height: Double = 240
+    private let width: Double = 200
+    private let height: Double = 200
     private let dotSize: Double = 8
+    
+    private let primaryColor: Color = .primary
 
     var body: some View {
         Rectangle()
-            .fill(.quaternary.opacity(0.5))
+            .fill(.clear)
             .frame(width: width, height: height)
             .overlay {
                 ForEach(Array(characters.enumerated()), id: \.offset) { index, character in
@@ -110,27 +115,31 @@ struct PigpenTriangleKeyboard: View {
                                 .font(.title2.bold())
                                 .foregroundColor(.primary)
                                 .rotationEffect(.degrees(-45))
-                                .frame(width: width/3, height: height/3)
-                                .rotationEffect(.degrees(45))
+                                .frame(width: width*1.1/3, height: height*1.1/3)
+//                                .rotationEffect(.degrees(45))
                             
                             Circle()
-                                .fill(.black.opacity(0.8))
+                                .fill(primaryColor.opacity(0.8))
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(dotted ? 1 : 0)
                                 .offset(dotOffset)
+                                .rotationEffect(.degrees(-45))
                         }
+//                        .padding()
+                        .background(Color.accentColor.opacity(0.1))
+                        .rotationEffect(.degrees(45))
                     }
                     .offset(offset)
                 }
             }
             .overlay {
                 Rectangle()
-                    .fill(.black)
-                    .frame(width: 3, height: height * 1.15)
+                    .fill(Color.accentColor.opacity(0.7))
+                    .frame(width: 3)
                     .rotationEffect(.degrees(-45))
                 Rectangle()
-                    .fill(.black)
-                    .frame(width: 3, height: height * 1.15)
+                    .fill(Color.accentColor.opacity(0.7))
+                    .frame(width: 3)
                     .rotationEffect(.degrees(45))
             }
             .cornerRadius(8)
@@ -142,28 +151,32 @@ struct PigpenKeyboard: View {
     @State private var tapped: String = ""
     
     var body: some View {
-        HStack {
-            PigpenSquareKeyboard(
-                tapped: $tapped,
-                characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
-            )
+        VStack {
+            HStack {
+                PigpenSquareKeyboard(
+                    tapped: $tapped,
+                    characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
+                )
+                
+                PigpenSquareKeyboard(
+                    tapped: $tapped,
+                    characters: ["J", "K", "L", "M", "N", "O", "P", "Q", "R"],
+                    dotted: true
+                )
+            }
             
-            PigpenSquareKeyboard(
-                tapped: $tapped,
-                characters: ["J", "K", "L", "M", "N", "O", "P", "Q", "R"],
-                dotted: true
-            )
-            
-            PigpenTriangleKeyboard(
-                tapped: $tapped,
-                characters: ["S", "T", "U", "V"]
-            )
-            
-            PigpenTriangleKeyboard(
-                tapped: $tapped,
-                characters: ["W", "X", "Y", "Z"],
-                dotted: true
-            )
+            HStack {
+                PigpenTriangleKeyboard(
+                    tapped: $tapped,
+                    characters: ["S", "T", "U", "V"]
+                )
+                
+                PigpenTriangleKeyboard(
+                    tapped: $tapped,
+                    characters: ["W", "X", "Y", "Z"],
+                    dotted: true
+                )
+            }
         }
     }
 }
