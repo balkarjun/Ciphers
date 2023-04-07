@@ -10,13 +10,11 @@ import SwiftUI
 struct PigpenText: View {
     private let text: String
     private let highlighted: String
-    private let replaced: Set<String>
     private let lineColor: Color
     
-    init(_ text: String, highlighted: String = "", replaced: Set<String> = [], lineColor: Color = .primary) {
+    init(_ text: String, highlighted: String = "", lineColor: Color = .primary) {
         self.text = text
-        self.highlighted = highlighted
-        self.replaced = replaced
+        self.highlighted = highlighted.uppercased()
         self.lineColor = lineColor
     }
     
@@ -43,26 +41,23 @@ struct PigpenText: View {
     var body: some View {
         VStack(alignment: .leading, spacing: lineSpacing) {
             ForEach(rowText, id: \.self) { line in
-                HStack(spacing: kerning) {
+                HStack(spacing: 0) {
                     ForEach(line, id: \.self) { char in
-                        VStack(spacing: lineSpacing/2) {
-                            let isCompleted = replaced.contains(String(char))
-                            let isHighlighted = (String(char)) == highlighted
-                            
-                            if String(char) == " " {
-                                BlankSpaceCharacter
-                            } else if String(char) == "," {
-                                CommaCharacter
-                            } else {
-                                if isCompleted {
-                                    Text(String(char))
-                                        .font(.title2.weight(.semibold))
-                                        .frame(width: charWidth, height: charHeight)
-                                } else {
-                                    PigpenCharacter(String(char), lineColor: lineColor)
-                                        .background(isHighlighted ? .green.opacity(0.6) : .clear)
+                        let isHighlighted = (String(char)) == highlighted
+                        
+                        if String(char) == " " {
+                            BlankSpaceCharacter
+                        } else if String(char) == "," {
+                            CommaCharacter
+                        } else {
+                            PigpenCharacter(String(char), lineColor: lineColor)
+                                .padding(.horizontal, kerning/2)
+                                .padding(.vertical, 8)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 2)
+                                        .fill(.green.opacity(0.5))
+                                        .opacity(isHighlighted ? 1 : 0)
                                 }
-                            }
                         }
                     }
                 }
@@ -89,6 +84,6 @@ struct PigpenText: View {
 
 struct PigpenText_Previews: PreviewProvider {
     static var previews: some View {
-        PigpenText("Sphinx of black quartz, judge my vow")
+        PigpenText("Sphinx of black quartz, judge my vow", highlighted: "A")
     }
 }

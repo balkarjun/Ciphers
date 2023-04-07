@@ -18,39 +18,40 @@ struct PigpenSection: View {
         ScrollView {
             VStack {
                 HStack(spacing: 16) {
-                    PigpenCharacter(String(highlighted), lineColor: .green, charWidth: 80, charHeight: 80)
-                        .padding()
-                        .padding(.leading)
-                        .opacity(highlighted == "" ? 0 : 1)
+                    PigpenCharacter(
+                        String(highlighted),
+                        charWidth: 80,
+                        charHeight: 80
+                    )
+                    .padding()
+                    .padding(.leading)
+                    .opacity(highlighted == "" ? 0 : 1)
                     
                     Rectangle()
-                        .fill(.quaternary)
+                        .fill(.quaternary.opacity(0.5))
                         .frame(width: 2)
                     
                     PigpenText(
                         target,
-                        highlighted: highlighted,
-                        replaced: Set<String>()
+                        highlighted: highlighted
                     )
                     .padding()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .strokeBorder(.quaternary.opacity(0.5), lineWidth: 1)
+                        .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
                 }
                 
-                PigpenText(
-                    target,
-                    highlighted: "",
-                    replaced: completedCharacters,
-                    lineColor: .clear
+                AnswerField(
+                    target: target,
+                    completed: completedCharacters
                 )
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .strokeBorder(.quaternary.opacity(0.5), lineWidth: 1)
+                        .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
                 }
                 .padding(.bottom)
                     
@@ -112,6 +113,30 @@ struct PigpenSection: View {
             }
             .navigationBarTitleDisplayMode(.inline)
         }
+    }
+}
+
+struct AnswerField: View {
+    let target: String
+    let completed: Set<String>
+    
+    private var displayedText: String {
+        var result = ""
+        for character in target.map({ String($0) }) {
+            if completed.contains(character) {
+                result += character
+            } else {
+                result += "—"
+            }
+        }
+        
+        return result
+    }
+    
+    var body: some View {
+        Text(displayedText)
+            .font(.title3.monospaced())
+            .fontWeight(.medium)
     }
 }
 
