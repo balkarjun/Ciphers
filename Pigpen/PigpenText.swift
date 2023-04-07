@@ -10,12 +10,12 @@ import SwiftUI
 struct PigpenText: View {
     private let text: String
     private let highlighted: String
-    private let lineColor: Color
+    private let completed: Set<String>
     
-    init(_ text: String, highlighted: String = "", lineColor: Color = .primary) {
+    init(_ text: String, highlighted: String = "", completed: Set<String>) {
         self.text = text
         self.highlighted = highlighted.uppercased()
-        self.lineColor = lineColor
+        self.completed = completed
     }
     
     private let charWidth: Double = 20
@@ -43,14 +43,15 @@ struct PigpenText: View {
             ForEach(rowText, id: \.self) { line in
                 HStack(spacing: 0) {
                     ForEach(line, id: \.self) { char in
-                        let isHighlighted = (String(char)) == highlighted
+                        let isHighlighted = ((String(char)) == highlighted)
+                        let isCompleted = completed.contains(String(char))
                         
                         if String(char) == " " {
                             BlankSpaceCharacter
                         } else if String(char) == "," {
                             CommaCharacter
                         } else {
-                            PigpenCharacter(String(char), lineColor: lineColor)
+                            PigpenCharacter(String(char), lineColor: isCompleted ? .secondary : .primary)
                                 .padding(.horizontal, kerning/2)
                                 .padding(.vertical, 8)
                                 .background {
@@ -84,6 +85,6 @@ struct PigpenText: View {
 
 struct PigpenText_Previews: PreviewProvider {
     static var previews: some View {
-        PigpenText("Sphinx of black quartz, judge my vow", highlighted: "A")
+        PigpenText("Sphinx of black quartz, judge my vow", highlighted: "A", completed: ["Q"])
     }
 }

@@ -33,7 +33,8 @@ struct PigpenSection: View {
                     
                     PigpenText(
                         target,
-                        highlighted: highlighted
+                        highlighted: highlighted,
+                        completed: completedCharacters
                     )
                     .padding()
                 }
