@@ -79,10 +79,10 @@ struct PigpenTriangleKeyboard: View {
     var dotted: Bool = false
     
     func getOffset(for index: Int) -> CGSize {
-        if index == 0 { return CGSize(width: 0, height: -60)}
-        if index == 1 { return CGSize(width: -60, height: 0)}
-        if index == 2 { return CGSize(width: 60, height: 0)}
-        return CGSize(width: 0, height: 60)
+        if index == 0 { return CGSize(width: 0, height: -56)}
+        if index == 1 { return CGSize(width: -56, height: 0)}
+        if index == 2 { return CGSize(width: 56, height: 0)}
+        return CGSize(width: 0, height: 56)
     }
     
     func getDotOffset(for index: Int) -> CGSize {
@@ -116,7 +116,6 @@ struct PigpenTriangleKeyboard: View {
                                 .foregroundColor(.primary)
                                 .rotationEffect(.degrees(-45))
                                 .frame(width: width*1.1/3, height: height*1.1/3)
-//                                .rotationEffect(.degrees(45))
                             
                             Circle()
                                 .fill(primaryColor.opacity(0.8))
@@ -125,7 +124,6 @@ struct PigpenTriangleKeyboard: View {
                                 .offset(dotOffset)
                                 .rotationEffect(.degrees(-45))
                         }
-//                        .padding()
                         .background(Color.accentColor.opacity(0.1))
                         .rotationEffect(.degrees(45))
                     }
@@ -135,17 +133,16 @@ struct PigpenTriangleKeyboard: View {
             .overlay {
                 Rectangle()
                     .fill(Color.accentColor.opacity(0.7))
-                    .frame(width: 3)
+                    .frame(width: 3, height: height/1.25)
                     .rotationEffect(.degrees(-45))
                 Rectangle()
                     .fill(Color.accentColor.opacity(0.7))
-                    .frame(width: 3)
+                    .frame(width: 3, height: height/1.25)
                     .rotationEffect(.degrees(45))
             }
             .cornerRadius(8)
     }
 }
-
 
 struct PigpenKeyboard: View {
     @State private var tapped: String = ""
