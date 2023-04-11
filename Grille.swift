@@ -9,7 +9,8 @@ import SwiftUI
 
 struct GrillePaper: View {
     let initialOffset: CGSize = .zero
-    let text: [String] = "             h     s o      t          n        i         c     a            m      ".uppercased().map{ String($0) }
+    let text: String = "             h     s o      t          n        i         c     a            m      "
+    let screenWidth: Double
 
     @State private var currentOffset = CGSize.zero
     @State private var finalOffset = CGSize.zero
@@ -21,103 +22,111 @@ struct GrillePaper: View {
         )
     }
     
-    @State private var screenWidth: Double = 0
-    // size of bounding box of characters
-    private let charBoxSize: CGSize = .init(width: 25, height: 25)
+    private var boxHeight: Double {
+        let columns: Int = (text.count - 1) / lineLength
+
+        return Double(columns + 1) * (charHeight + lineSpacing)
+    }
     
-    // number of characters in a line
+    private let charWidth: Double = 16
+    private let charHeight: Double = 20
+    // space between two consecutive characters
+    private let kerning: Double = 8
+    // space between rows of characters
+    private let lineSpacing: Double = 8
+        
+    // number of characters that can fit in a line
     private var lineLength: Int {
         if screenWidth == 0 { return 1 }
 
-        return Int(screenWidth / charBoxSize.width)
+        return Int(screenWidth / (charWidth))
     }
     
-    private var boxHeight: Double {
-        let columns: Int = (text.count - 1) / lineLength
-        
-        return Double(columns + 1) * charBoxSize.height
+    // splits the text into an array of characters for each line
+    private var rowText: [[String]] {
+        return Array(text.uppercased().map { String($0) }).chunked(into: lineLength)
     }
     
     var body: some View {
-        Rectangle()
-            .fill(.clear)
-            .allowsHitTesting(false)
-            .measureSize { screenWidth = $0.width }
-            .overlay {
-                Rectangle()
-                    .fill(.quaternary.opacity(0.5))
-                    .overlay(alignment: .topLeading) {
-                        ForEach(Array(text.enumerated()), id: \.offset) { index, character in
-                            let colNumber = (index) % lineLength
-                            let xOffset = Double(colNumber) * charBoxSize.width
-                            let rowNumber: Int = (index) / lineLength
-                            let yOffset = Double(rowNumber) * charBoxSize.height
-                            let _ = print(rowNumber)
+        VStack(alignment: .leading, spacing: lineSpacing) {
+            ForEach(rowText, id: \.self) { line in
+                HStack(spacing: 0) {
+                    ForEach(line, id: \.self) { char in
+                        let isEmpty = (String(char) == " ")
                             Rectangle()
-                                .fill(.white)
+                                .fill(isEmpty ? .clear : .white)
+                                .frame(width: charWidth, height: charHeight)
                                 .blendMode(.exclusion)
-                                .frame(width: charBoxSize.width, height: charBoxSize.height)
-                                .offset(x: xOffset, y: yOffset)
-                                .opacity(character == " " ? 0 : 1)
-                        }
+                                .cornerRadius(2)
                     }
-//                    .frame(width: 800, height: 100)
-                    .frame(width: screenWidth, height: boxHeight)
-                    .offset(totalOffset)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { gesture in
-                                currentOffset = gesture.translation
-                            }
-                            .onEnded { gesture in
-                                let offset = gesture.translation
-                                // finalOffset += offset
-                                finalOffset = CGSize(width: finalOffset.width + offset.width, height: finalOffset.height + offset.height)
-                                currentOffset = .zero
-                            }
-                    )
+                }
             }
-            .onAppear {
-                finalOffset = initialOffset
-            }
+        }
+        .padding()
+        .padding(.vertical)
+        .background(.quaternary.opacity(0.5))
+        .cornerRadius(8)
+        .offset(totalOffset)
+        .gesture(
+            DragGesture()
+                .onChanged { gesture in
+                    currentOffset = gesture.translation
+                }
+                .onEnded { gesture in
+                    let offset = gesture.translation
+                    // finalOffset += offset
+                    finalOffset = CGSize(width: finalOffset.width + offset.width, height: finalOffset.height + offset.height)
+                    currentOffset = .zero
+                }
+        )
+        .onAppear {
+            finalOffset = initialOffset
+        }
     }
 }
 
 struct Grille: View {
-    let text: [String] = "viewed through holes of light, hidden in plain sight, the clue faces left from right".uppercased().map{ String($0) }
+    let text = "Viewed through holes of light, hidden in plain sight, the clue faces left from right".uppercased()
+    
+    private let charWidth: Double = 16
+    private let charHeight: Double = 20
+    // space between two consecutive characters
+    private let kerning: Double = 8
+    // space between rows of characters
+    private let lineSpacing: Double = 8
     
     @State private var screenWidth: Double = 0
-    // size of bounding box of characters
-    private let charBoxSize: CGSize = .init(width: 25, height: 25)
     
-    // number of characters in a line
+    // number of characters that can fit in a line
     private var lineLength: Int {
         if screenWidth == 0 { return 1 }
 
-        return Int(screenWidth / charBoxSize.width)
+        return Int(screenWidth / (charWidth))
+    }
+    
+    // splits the text into an array of characters for each line
+    private var rowText: [[String]] {
+        return Array(text.uppercased().map { String($0) }).chunked(into: lineLength)
     }
     
     var body: some View {
-        ZStack {
-            ForEach(Array(text.enumerated()), id: \.offset) { index, character in
-                let colNumber: Int = (index) % lineLength
-                let xOffset: Double = Double(colNumber) * charBoxSize.width
-                let rowNumber: Int = (index) / lineLength
-                let yOffset: Double = Double(rowNumber) * charBoxSize.height
-
-                Text(character)
-                    .font(.system(size: 20, weight: .semibold, design: .serif))
-                    .frame(width: charBoxSize.width, height: charBoxSize.height)
-                    .offset(x: xOffset, y: yOffset)
+        VStack(alignment: .leading, spacing: lineSpacing) {
+            ForEach(rowText, id: \.self) { line in
+                HStack(spacing: 0) {
+                    ForEach(line, id: \.self) { char in
+                        Text(String(char))
+                            .font(.system(size: 20, weight: .semibold, design: .monospaced))
+                            .frame(width: charWidth, height: charHeight)
+                    }
+                }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity)
         .overlay {
-            Color.clear
-                .measureSize { screenWidth = $0.width }
+            Color.clear.measureSize { screenWidth = $0.width }
         }
         .overlay {
-            GrillePaper()
+            GrillePaper(screenWidth: screenWidth)
         }
     }
 }
