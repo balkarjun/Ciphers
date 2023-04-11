@@ -4,9 +4,11 @@ enum AppPage: Int, CaseIterable {
     case welcome = 0
     case pigpenInfo = 1
     case pigpenCipher = 2
-    case grilleInfo = 3
-    case grilleCipher = 4
-    case final = 5
+    case caesarInfo = 3
+    case caesarCipher = 4
+    case grilleInfo = 5
+    case grilleCipher = 6
+    case final = 7
 }
 
 struct ContentView: View {
@@ -39,6 +41,10 @@ struct ContentView: View {
             return "Pigpen Info"
         case .pigpenCipher:
             return "Pigpen Cipher"
+        case .caesarInfo:
+            return "Caesar Info"
+        case .caesarCipher:
+            return "Caesar Cipher"
         case .grilleInfo:
             return "Grille Info"
         case .grilleCipher:
@@ -85,6 +91,10 @@ struct ContentView: View {
                     WelcomeView()
                 case .pigpenInfo:
                     PigpenInfoView()
+                case .caesarInfo:
+                    EmptyView()
+                case .caesarCipher:
+                    CaesarCipher()
                 case .pigpenCipher:
                     PigpenSection()
                 case .grilleInfo:
