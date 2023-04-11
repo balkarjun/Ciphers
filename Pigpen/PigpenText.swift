@@ -64,7 +64,7 @@ struct PigpenText: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity)
         .overlay {
             Color.clear.measureSize { screenWidth = $0.width }
         }

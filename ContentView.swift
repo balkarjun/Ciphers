@@ -82,9 +82,9 @@ struct ContentView: View {
             ScrollView {
                 switch currentPage {
                 case .welcome:
-                    EmptyView()
+                    WelcomeView()
                 case .pigpenInfo:
-                    EmptyView()
+                    PigpenInfoView()
                 case .pigpenCipher:
                     PigpenSection()
                 case .grilleInfo:
