@@ -100,7 +100,7 @@ struct ContentView: View {
                 case .grilleInfo:
                     EmptyView()
                 case .grilleCipher:
-                    EmptyView()
+                    GrilleCipher()
                 case .final:
                     EmptyView()
                 }
