@@ -13,9 +13,9 @@ struct PigpenSquareKeyboard: View {
     let characters: [String]
     var dotted: Bool = false
     
-    private let width: Double = 200
-    private let height: Double = 200
-    private let dotSize: Double = 7
+    var width: Double = 160
+    var height: Double = 160
+    var dotSize: Double = 7
     
     private let primaryColor: Color = .primary
     
@@ -78,11 +78,15 @@ struct PigpenTriangleKeyboard: View {
     let characters: [String]
     var dotted: Bool = false
     
+    var width: Double = 160
+    var height: Double = 160
+    var dotSize: Double = 8
+    
     func getOffset(for index: Int) -> CGSize {
-        if index == 0 { return CGSize(width: 0, height: -56)}
-        if index == 1 { return CGSize(width: -56, height: 0)}
-        if index == 2 { return CGSize(width: 56, height: 0)}
-        return CGSize(width: 0, height: 56)
+        if index == 0 { return CGSize(width: 0, height: -height/3.5)}
+        if index == 1 { return CGSize(width: -width/3.5, height: 0)}
+        if index == 2 { return CGSize(width: width/3.5, height: 0)}
+        return CGSize(width: 0, height: height/3.5)
     }
     
     func getDotOffset(for index: Int) -> CGSize {
@@ -91,10 +95,6 @@ struct PigpenTriangleKeyboard: View {
         if index == 2 { return CGSize(width: -32, height: 0)}
         return CGSize(width: 0, height: -32)
     }
-    
-    private let width: Double = 200
-    private let height: Double = 200
-    private let dotSize: Double = 8
     
     private let primaryColor: Color = .primary
 

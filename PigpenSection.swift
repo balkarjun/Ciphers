@@ -61,22 +61,20 @@ struct PigpenSection: View {
                     characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
                 )
                 
-                VStack(spacing: 24) {
-                    PigpenTriangleKeyboard(
-                        tapped: $tapped,
-                        characters: ["S", "T", "U", "V"]
-                    )
-                    
-                    PigpenTriangleKeyboard(
-                        tapped: $tapped,
-                        characters: ["W", "X", "Y", "Z"],
-                        dotted: true
-                    )
-                }
-                
                 PigpenSquareKeyboard(
                     tapped: $tapped,
                     characters: ["J", "K", "L", "M", "N", "O", "P", "Q", "R"],
+                    dotted: true
+                )
+
+                PigpenTriangleKeyboard(
+                    tapped: $tapped,
+                    characters: ["S", "T", "U", "V"]
+                )
+                
+                PigpenTriangleKeyboard(
+                    tapped: $tapped,
+                    characters: ["W", "X", "Y", "Z"],
                     dotted: true
                 )
             }
