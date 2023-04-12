@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WelcomePage: View {
+    @EnvironmentObject var state: AppState
+    
     let target = encrypt(message: "Viewed through holes of light, hidden in plain sight, the clue faces left from right".uppercased(), shift: 10)
     
     var body: some View {
@@ -111,9 +113,7 @@ struct WelcomePage: View {
                         .padding()
                     }
                 
-                Button {
-                    
-                } label: {
+                Button(action: state.nextPage) {
                     HStack {
                         Text("Next")
                             .font(.body.bold())
@@ -137,5 +137,6 @@ struct WelcomePage_Previews: PreviewProvider {
     static var previews: some View {
         WelcomePage()
             .previewInterfaceOrientation(.landscapeLeft)
+            .environmentObject(AppState())
     }
 }

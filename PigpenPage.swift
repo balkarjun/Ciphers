@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PigpenPage: View {
+    @EnvironmentObject var state: AppState
+
     let target = encrypt(message: "Viewed through holes of light, hidden in plain sight, the clue faces left from right".uppercased(), shift: 10)
     
     @State private var tapped: String = ""
@@ -135,9 +137,7 @@ struct PigpenPage: View {
                         }
                     }
                 
-                Button {
-                    
-                } label: {
+                Button(action: state.nextPage) {
                     HStack {
                         Text("Next")
                             .font(.body.bold())
@@ -212,5 +212,6 @@ struct PigpenPage_Previews: PreviewProvider {
     static var previews: some View {
         PigpenPage()
             .previewInterfaceOrientation(.landscapeLeft)
+            .environmentObject(AppState())
     }
 }
