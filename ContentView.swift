@@ -1,18 +1,15 @@
 import SwiftUI
 
 enum AppPage: Int, CaseIterable {
-    case welcome = 0
-    case pigpenInfo = 1
-    case pigpenCipher = 2
-    case caesarInfo = 3
-    case caesarCipher = 4
-    case grilleInfo = 5
-    case grilleCipher = 6
-    case final = 7
+    case zero = 0
+    case one = 1
+    case two = 2
+    case three = 3
+    case four = 4
 }
 
 struct ContentView: View {
-    @State private var currentPage: AppPage = .welcome
+    @State private var currentPage: AppPage = .one
     private var isFirstPage: Bool {
         currentPage.rawValue <= 0
     }
@@ -24,34 +21,13 @@ struct ContentView: View {
     func nextPage() {
         if isLastPage { return }
         
-        currentPage = AppPage(rawValue: currentPage.rawValue + 1) ?? .welcome
+        currentPage = AppPage(rawValue: currentPage.rawValue + 1) ?? .zero
     }
     
     func prevPage() {
         if isFirstPage { return }
         
-        currentPage = AppPage(rawValue: currentPage.rawValue - 1) ?? .welcome
-    }
-    
-    private var pageTitle: String {
-        switch currentPage {
-        case .welcome:
-            return "Welcome"
-        case .pigpenInfo:
-            return "Pigpen Info"
-        case .pigpenCipher:
-            return "Pigpen Cipher"
-        case .caesarInfo:
-            return "Caesar Info"
-        case .caesarCipher:
-            return "Caesar Cipher"
-        case .grilleInfo:
-            return "Grille Info"
-        case .grilleCipher:
-            return "Grille Cipher"
-        case .final:
-            return "Final"
-        }
+        currentPage = AppPage(rawValue: currentPage.rawValue - 1) ?? .zero
     }
     
     var body: some View {
@@ -86,6 +62,20 @@ struct ContentView: View {
             }
             .padding(.horizontal)
             */
+            
+            switch currentPage {
+            case .zero:
+                WelcomePage()
+            case .one:
+                PigpenPage()
+            case .two:
+                EmptyView()
+            case .three:
+                EmptyView()
+            case .four:
+                EmptyView()
+            }
+            /*
             switch currentPage {
             case .welcome:
                 WelcomePage()
@@ -104,6 +94,7 @@ struct ContentView: View {
             case .final:
                 EmptyView()
             }
+            */
         }
     }
 }
