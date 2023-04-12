@@ -56,6 +56,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            /*
             HStack {
                 Button(action: prevPage) {
                     HStack {
@@ -84,26 +85,24 @@ struct ContentView: View {
                 .disabled(isLastPage)
             }
             .padding(.horizontal)
-            
-            ScrollView {
-                switch currentPage {
-                case .welcome:
-                    WelcomeView()
-                case .pigpenInfo:
-                    PigpenInfoView()
-                case .caesarInfo:
-                    EmptyView()
-                case .caesarCipher:
-                    CaesarCipher()
-                case .pigpenCipher:
-                    PigpenSection()
-                case .grilleInfo:
-                    EmptyView()
-                case .grilleCipher:
-                    GrilleCipher()
-                case .final:
-                    EmptyView()
-                }
+            */
+            switch currentPage {
+            case .welcome:
+                WelcomePage()
+            case .pigpenInfo:
+                PigpenInfoView()
+            case .caesarInfo:
+                EmptyView()
+            case .caesarCipher:
+                CaesarCipher()
+            case .pigpenCipher:
+                PigpenSection()
+            case .grilleInfo:
+                EmptyView()
+            case .grilleCipher:
+                GrilleCipher()
+            case .final:
+                EmptyView()
             }
         }
     }
