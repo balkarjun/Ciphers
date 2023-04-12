@@ -8,22 +8,24 @@
 import SwiftUI
 
 struct PigpenText: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     private let text: String
     private let highlighted: String
     private let completed: Set<String>
     
-    init(_ text: String, highlighted: String = "", completed: Set<String>) {
+    init(_ text: String, highlighted: String = "", completed: Set<String> = []) {
         self.text = text
         self.highlighted = highlighted.uppercased()
         self.completed = completed
     }
     
-    private let charWidth: Double = 20
-    private let charHeight: Double = 20
+    private let charWidth: Double = 18
+    private let charHeight: Double = 18
     // space between two consecutive characters
-    private let kerning: Double = 8
+    private let kerning: Double = 6
     // space between rows of characters
-    private let lineSpacing: Double = 8
+    private let lineSpacing: Double = 0
     
     @State private var screenWidth: Double = 0
     
@@ -36,6 +38,10 @@ struct PigpenText: View {
     // splits the text into an array of characters for each line
     private var rowText: [[String]] {
         return Array(text.uppercased().map { String($0) }).chunked(into: lineLength)
+    }
+    
+    private var primaryColor: Color {
+        colorScheme == .dark ? .white : .black
     }
     
     var body: some View {
@@ -51,20 +57,25 @@ struct PigpenText: View {
                         } else if String(char) == "," {
                             CommaCharacter
                         } else {
-                            PigpenCharacter(String(char), lineColor: isCompleted ? .secondary : .primary)
-                                .padding(.horizontal, kerning/2)
-                                .padding(.vertical, 8)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 2)
-                                        .fill(.green.opacity(0.5))
-                                        .opacity(isHighlighted ? 1 : 0)
-                                }
+                            PigpenCharacter(
+                                String(char),
+                                lineColor: isCompleted ? .secondary : primaryColor,
+                                charWidth: charWidth,
+                                charHeight: charHeight
+                            )
+                            .padding(.horizontal, kerning/2)
+                            .padding(.vertical, 8)
+                            .background {
+                                RoundedRectangle(cornerRadius: 2)
+                                    .fill(.green.opacity(0.5))
+                                    .opacity(isHighlighted ? 1 : 0)
+                            }
                         }
                     }
                 }
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .overlay {
             Color.clear.measureSize { screenWidth = $0.width }
         }
