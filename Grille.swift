@@ -9,7 +9,8 @@ import SwiftUI
 
 struct GrillePaper: View {
     let initialOffset: CGSize = .init(width: 0, height: 100)
-    let text = ".............H.....S.O......T.\n........N........I.........C...\n.A............M......"
+    let text = "...... ......h ....s o. ....t.\n.....n .. ...i. ...... ... c...\n.a... .... ...m ....".uppercased()
+
     let lineLength: Int
 
     @State private var currentOffset = CGSize.zero

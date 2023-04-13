@@ -146,7 +146,7 @@ struct ChunkedCharacter: View {
                     }
                 }
             } else if blocks {
-                let isEmpty = (character == ".")
+                let isEmpty = (character == "." || character == " ")
                 
                 Rectangle()
                     .fill(.clear)
