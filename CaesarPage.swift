@@ -22,7 +22,7 @@ struct CaesarPage: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            VStack {
+            VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Image(systemName: "2.circle.fill")
                         .font(.body.weight(.bold))
@@ -36,16 +36,61 @@ struct CaesarPage: View {
                 .background(.mint.opacity(0.15))
                 .cornerRadius(8)
                 
-                Text(encrypted)
-                    .font(.title2.monospaced())
-                    .fontWeight(.medium)
-                    .padding()
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(8)
-                
-                Spacer()
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        Text(encrypted)
+                            .font(.title3.monospaced())
+                            .fontWeight(.medium)
+                            .padding()
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(8)
+                        
+                        Text("In a ***Caesar Cipher***, each letter is replaced by a letter a fixed number of positions down the alphabet.")
+                            .padding()
+                        
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text("APPLE")
+                                    .font(.title3.monospaced().weight(.semibold))
+                                Text(encrypt(message: "APPLE", shift: 1))
+                                    .font(.title3.monospaced().weight(.semibold))
+                                    .foregroundColor(.teal)
+                            }
+                            .padding(.leading)
+                            
+                            Text("Here, each letter of the word ***APPLE*** is shifted by **1** position.\nA is shifted to B, L is shifted to M, and so on..")
+                                .padding(.horizontal)
+                        }
+                        
+                        Text("The encrypted message above seems to be shifted by some unknown amount.")
+                            .padding()
+                        
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack {
+                                Image(systemName: "rectangle.and.hand.point.up.left.fill")
+                                    .symbolRenderingMode(.hierarchical)
+                                    .foregroundColor(.teal)
+                                    .font(.body.bold())
+                                
+                                Text("Decipher the Message")
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundColor(.teal)
+                                    .offset(y: -1)
+                            }
+                            Text("Use the wheel to shift each letter in the message, until it makes sense.")
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 8)
+                                .strokeBorder(.quaternary, lineWidth: 1)
+                        }
+                        Spacer()
+                    }
+                    .padding(.top, 12)
+                }
             }
             .frame(maxWidth: .infinity)
             
@@ -55,7 +100,7 @@ struct CaesarPage: View {
                     .overlay {
                         VStack {
                             Text(shifted)
-                                .font(.title2.monospaced())
+                                .font(.title3.monospaced())
                                 .fontWeight(.medium)
                                 .padding()
                                 .padding()
