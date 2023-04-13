@@ -11,7 +11,7 @@ struct ContentView: View {
             case .one:
                 PigpenPage()
             case .two:
-                EmptyView()
+                CaesarPage()
             case .three:
                 EmptyView()
             case .four:
