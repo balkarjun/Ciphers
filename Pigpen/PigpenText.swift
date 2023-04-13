@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PigpenText: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
     private let text: String
     private let highlighted: String
     private let completed: Set<String>
@@ -35,46 +33,9 @@ struct PigpenText: View {
 
         return Int(screenWidth / (charWidth + kerning))
     }
-    // splits the text into an array of characters for each line
-    private var rowText: [[String]] {
-        return Array(text.uppercased().map { String($0) }).chunked(into: lineLength)
-    }
-    
-    private var primaryColor: Color {
-        colorScheme == .dark ? .white : .black
-    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: lineSpacing) {
-            ForEach(rowText, id: \.self) { line in
-                HStack(spacing: 0) {
-                    ForEach(line, id: \.self) { char in
-                        let isHighlighted = ((String(char)) == highlighted)
-                        let isCompleted = completed.contains(String(char))
-                        
-                        if String(char) == " " {
-                            BlankSpaceCharacter
-                        } else if String(char) == "," {
-                            CommaCharacter
-                        } else {
-                            PigpenCharacter(
-                                String(char),
-                                lineColor: isCompleted ? .secondary : primaryColor,
-                                charWidth: charWidth,
-                                charHeight: charHeight
-                            )
-                            .padding(.horizontal, kerning/2)
-                            .padding(.vertical, 8)
-                            .background {
-                                RoundedRectangle(cornerRadius: 2)
-                                    .fill(.green.opacity(0.5))
-                                    .opacity(isHighlighted ? 1 : 0)
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        ChunkedText(text: text, chunkSize: lineLength, charWidth: charWidth, charHeight: charHeight, pigpen: true, highlighted: highlighted, completed: completed)
         .frame(maxWidth: .infinity, alignment: .leading)
         .overlay {
             Color.clear.measureSize { screenWidth = $0.width }

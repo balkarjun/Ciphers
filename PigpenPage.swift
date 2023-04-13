@@ -10,7 +10,7 @@ import SwiftUI
 struct PigpenPage: View {
     @EnvironmentObject var state: AppState
 
-    let target = encrypt(message: "Viewed through holes of light, hidden in plain sight, the clue faces left from right".uppercased(), shift: 10)
+    let target = encrypt(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), shift: 10)
     
     @State private var tapped: String = ""
     @State var highlighted: String = encrypt(message: "V", shift: 10)
@@ -166,7 +166,7 @@ struct PigpenPage: View {
             
             // skip until next unseen character is reached. highlight that
             var found = false
-            for character in target.map({ String($0) }) {
+            for character in target.map({ String($0) }).filter({ $0 != "\n" }) {
                 if !completedCharacters.contains(character) {
                     highlighted = character
                     found = true

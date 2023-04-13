@@ -10,7 +10,7 @@ import SwiftUI
 struct WelcomePage: View {
     @EnvironmentObject var state: AppState
     
-    let target = encrypt(message: "Viewed through holes of light, hidden in plain sight, the clue faces left from right".uppercased(), shift: 10)
+    let target = encrypt(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), shift: 10)
     
     var body: some View {
         HStack(spacing: 16) {
