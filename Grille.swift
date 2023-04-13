@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct GrillePaper: View {
-    let initialOffset: CGSize = .zero
-    let text: String = "             h     s o      t          n        i         c     a            m      "
-    let screenWidth: Double
+    let initialOffset: CGSize = .init(width: 0, height: 100)
+    let text = ".............H.....S.O......T.\n........N........I.........C...\n.A............M......"
+    let lineLength: Int
 
     @State private var currentOffset = CGSize.zero
     @State private var finalOffset = CGSize.zero
@@ -22,49 +22,14 @@ struct GrillePaper: View {
         )
     }
     
-    private var boxHeight: Double {
-        let columns: Int = (text.count - 1) / lineLength
-
-        return Double(columns + 1) * (charHeight + lineSpacing)
-    }
-    
-    private let charWidth: Double = 16
-    private let charHeight: Double = 20
-    // space between two consecutive characters
-    private let kerning: Double = 8
-    // space between rows of characters
-    private let lineSpacing: Double = 8
-        
-    // number of characters that can fit in a line
-    private var lineLength: Int {
-        if screenWidth == 0 { return 1 }
-
-        return Int(screenWidth / (charWidth))
-    }
-    
-    // splits the text into an array of characters for each line
-    private var rowText: [[String]] {
-        return Array(text.uppercased().map { String($0) }).chunked(into: lineLength)
-    }
-    
     var body: some View {
-        VStack(alignment: .leading, spacing: lineSpacing) {
-            ForEach(rowText, id: \.self) { line in
-                HStack(spacing: 0) {
-                    ForEach(line, id: \.self) { char in
-                        let isEmpty = (String(char) == " ")
-                            Rectangle()
-                                .fill(isEmpty ? .clear : .white)
-                                .frame(width: charWidth, height: charHeight)
-                                .blendMode(.exclusion)
-                                .cornerRadius(2)
-                    }
-                }
-            }
-        }
+        ChunkedText(
+            text: text,
+            chunkSize: lineLength,
+            blocks: true
+        )
         .padding()
-        .padding(.vertical)
-        .background(.quaternary.opacity(0.5))
+        .background(.white.opacity(0.1))
         .cornerRadius(8)
         .offset(totalOffset)
         .gesture(
@@ -86,14 +51,14 @@ struct GrillePaper: View {
 }
 
 struct Grille: View {
-    let text = "Viewed through holes of light, hidden in plain sight, the clue faces left from right".uppercased()
-    
-    private let charWidth: Double = 16
-    private let charHeight: Double = 20
+    let text = "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased()
+
+    private let charWidth: Double = 18
+    private let charHeight: Double = 18
     // space between two consecutive characters
-    private let kerning: Double = 8
+    private let kerning: Double = 6
     // space between rows of characters
-    private let lineSpacing: Double = 8
+    private let lineSpacing: Double = 6
     
     @State private var screenWidth: Double = 0
     
@@ -101,32 +66,21 @@ struct Grille: View {
     private var lineLength: Int {
         if screenWidth == 0 { return 1 }
 
-        return Int(screenWidth / (charWidth))
-    }
-    
-    // splits the text into an array of characters for each line
-    private var rowText: [[String]] {
-        return Array(text.uppercased().map { String($0) }).chunked(into: lineLength)
+        return Int(screenWidth / (charWidth + kerning))
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: lineSpacing) {
-            ForEach(rowText, id: \.self) { line in
-                HStack(spacing: 0) {
-                    ForEach(line, id: \.self) { char in
-                        Text(String(char))
-                            .font(.system(size: 20, weight: .semibold, design: .monospaced))
-                            .frame(width: charWidth, height: charHeight)
-                    }
-                }
-            }
-        }
+        ChunkedText(
+            text: text,
+            chunkSize: lineLength
+        )
         .frame(maxWidth: .infinity)
         .overlay {
             Color.clear.measureSize { screenWidth = $0.width }
         }
         .overlay {
-            GrillePaper(screenWidth: screenWidth)
+            GrillePaper(lineLength: lineLength)
+                .blendMode(.exclusion)
         }
     }
 }

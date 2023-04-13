@@ -18,6 +18,7 @@ struct ChunkedText: View {
     var charWidth: Double = 18
     var charHeight: Double = 18
     var pigpen: Bool = false
+    var blocks: Bool = false
     
     var highlighted: String = ""
     var completed: Set<String> = []
@@ -77,6 +78,7 @@ struct ChunkedText: View {
                             width: charWidth,
                             height: charHeight,
                             pigpen: pigpen,
+                            blocks: blocks,
                             highlighted: isHighlighted,
                             completed: isCompleted
                         )
@@ -94,6 +96,7 @@ struct ChunkedCharacter: View {
     let width: Double
     let height: Double
     let pigpen: Bool
+    let blocks: Bool
     
     var highlighted: Bool = false
     var completed: Bool = false
@@ -142,9 +145,22 @@ struct ChunkedCharacter: View {
                             .opacity(highlighted ? 1 : 0)
                     }
                 }
+            } else if blocks {
+                let isEmpty = (character == ".")
+                
+                Rectangle()
+                    .fill(.clear)
+                    .frame(width: width, height: height)
+                    .padding(.horizontal, kerning/2)
+                    .padding(.vertical, lineSpacing)
+                    .background(isEmpty ? .clear : .white)
+                    .cornerRadius(2)
             } else {
                 Text(character)
-                    .font(.body.monospaced())
+                    .font(.body.monospaced().weight(.semibold))
+                    .frame(width: width, height: height)
+                    .padding(.horizontal, kerning/2)
+                    .padding(.vertical, lineSpacing)
             }
         }
     }
@@ -153,7 +169,7 @@ struct ChunkedCharacter: View {
 struct ChunkedText_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            ChunkedText(text: "Sph\ninx of black qua\nrtz, judge my vow".uppercased(), chunkSize: 5, pigpen: false)
+            ChunkedText(text: "Sph\ninx of black qua\nrtz, judge my vow".uppercased(), chunkSize: 5, blocks: false)
         }
     }
 }

@@ -13,7 +13,7 @@ struct ContentView: View {
             case .two:
                 CaesarPage()
             case .three:
-                EmptyView()
+                GrillePage()
             case .four:
                 EmptyView()
             }
