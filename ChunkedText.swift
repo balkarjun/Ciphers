@@ -113,6 +113,7 @@ struct ChunkedCharacter: View {
         Text(",")
             .font(.system(size: 25, weight: .bold))
             .frame(width: width, height: height)
+            .foregroundColor(completed ? .secondary : primaryColor)
     }
     
     private var primaryColor: Color {

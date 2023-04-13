@@ -14,7 +14,7 @@ struct PigpenPage: View {
     
     @State private var tapped: String = ""
     @State var highlighted: String = encrypt(message: "V", shift: 10)
-    @State private var completedCharacters: Set<String> = [" ", ","]
+    @State private var completedCharacters: Set<String> = [" ", ",", "\n"]
     
     var body: some View {
         HStack(spacing: 16) {
@@ -82,8 +82,6 @@ struct PigpenPage: View {
                 
                 Text("***Hint***: The first character is **F**")
                     .padding([.horizontal, .bottom])
-
-                
                 
                 Spacer()
             }
@@ -99,6 +97,7 @@ struct PigpenPage: View {
                                 completed: completedCharacters
                             )
                             .padding()
+                            .padding(8)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)
@@ -106,8 +105,8 @@ struct PigpenPage: View {
                             }
                             .padding()
                             Spacer()
-                            VStack(spacing: 16) {
-                                HStack(spacing: 16) {
+                            VStack(spacing: 24) {
+                                HStack(spacing: 24) {
                                     PigpenSquareKeyboard(
                                         tapped: $tapped,
                                         characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
@@ -120,7 +119,7 @@ struct PigpenPage: View {
                                     )
                                 }
                                 
-                                HStack(spacing: 16) {
+                                HStack(spacing: 24) {
                                     PigpenTriangleKeyboard(
                                         tapped: $tapped,
                                         characters: ["S", "T", "U", "V"]
@@ -150,6 +149,7 @@ struct PigpenPage: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.teal)
+                .disabled(highlighted != "")
             }
             .frame(maxHeight: .infinity)
         }
@@ -166,7 +166,7 @@ struct PigpenPage: View {
             
             // skip until next unseen character is reached. highlight that
             var found = false
-            for character in target.map({ String($0) }).filter({ $0 != "\n" }) {
+            for character in target.map({ String($0) }) {
                 if !completedCharacters.contains(character) {
                     highlighted = character
                     found = true
@@ -191,10 +191,27 @@ struct AnswerField: View {
     private var displayedText: String {
         var result = ""
         for character in target.map({ String($0) }) {
-            if completed.contains(character) {
+            if character == "," {
+                result += " "
+            } else if completed.contains(character) {
                 result += character
             } else {
-                result += "—"
+                result += " "
+            }
+        }
+        
+        return result
+    }
+    
+    private var placeholder: String {
+        var result = ""
+        for character in target.map({ String($0) }) {
+            if character == "\n" || character == "," {
+                result += character
+            } else if completed.contains(character) {
+                result += " "
+            } else {
+                result += "·"
             }
         }
         
@@ -202,9 +219,16 @@ struct AnswerField: View {
     }
     
     var body: some View {
-        Text(displayedText)
-            .font(.title3.monospaced())
-            .fontWeight(.medium)
+        ZStack {
+            Text(displayedText)
+                .font(.title2.monospaced())
+                .fontWeight(.medium)
+            
+            Text(placeholder)
+                .font(.title2.monospaced())
+                .fontWeight(.medium)
+                .foregroundColor(.secondary)
+        }
     }
 }
 
