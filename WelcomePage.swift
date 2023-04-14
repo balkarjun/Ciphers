@@ -14,7 +14,7 @@ struct WelcomePage: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Image(systemName: "0.circle.fill")
                         .font(.body.weight(.bold))
@@ -28,68 +28,71 @@ struct WelcomePage: View {
                 .background(.mint.opacity(0.15))
                 .cornerRadius(8)
                 
-                Text("A ***cipher*** is a way to disguise a message and conceal it's meaning.")
-                    .padding()
-                
-                PigpenText(target)
-                    .padding()
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(8)
-                
-                Text("This cryptic message above contains a secret key that we're interested in.")
-                    .padding()
-                
-                Text("Through these series of tutorials, you will learn about some of the various ciphers used throughout history and uncover the hidden message one step at a time.")
-                    .padding([.horizontal, .bottom])
-                
-                VStack(alignment: .leading) {
-                    HStack {
-                        Text("Part 1")
-                            .font(.body.weight(.semibold).monospacedDigit())
-                            .foregroundColor(.secondary)
-                        Text("Pigpen Cipher")
-                            .font(.body.weight(.semibold))
-                        Spacer()
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        Text("A ***cipher*** is a way to disguise a message and conceal it's meaning.")
+                            .padding()
+                        
+                        PigpenText(target)
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(8)
+                        
+                        Text("This cryptic message above contains a secret key that we're interested in.")
+                            .padding()
+                        
+                        Text("Through these series of tutorials, you will learn about some of the various ciphers used throughout history and uncover the hidden message one step at a time.")
+                            .padding([.horizontal, .bottom])
+                        
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("Part 1")
+                                    .font(.body.weight(.semibold).monospacedDigit())
+                                    .foregroundColor(.secondary)
+                                Text("Pigpen Cipher")
+                                    .font(.body.weight(.semibold))
+                                Spacer()
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .strokeBorder(.thinMaterial, lineWidth: 1)
+                            }
+                            
+                            HStack {
+                                Text("Part 2")
+                                    .font(.body.weight(.semibold).monospacedDigit())
+                                    .foregroundColor(.secondary)
+                                Text("Caesar Cipher")
+                                    .font(.body.weight(.semibold))
+                                Spacer()
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .strokeBorder(.thinMaterial, lineWidth: 1)
+                            }
+                            
+                            HStack {
+                                Text("Part 3")
+                                    .font(.body.weight(.semibold).monospacedDigit())
+                                    .foregroundColor(.secondary)
+                                Text("Grille Cipher")
+                                    .font(.body.weight(.semibold))
+                                Spacer()
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .strokeBorder(.thinMaterial, lineWidth: 1)
+                            }
+                        }
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(.thinMaterial, lineWidth: 1)
-                    }
-                    
-                    HStack {
-                        Text("Part 2")
-                            .font(.body.weight(.semibold).monospacedDigit())
-                            .foregroundColor(.secondary)
-                        Text("Caesar Cipher")
-                            .font(.body.weight(.semibold))
-                        Spacer()
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(.thinMaterial, lineWidth: 1)
-                    }
-                    
-                    HStack {
-                        Text("Part 3")
-                            .font(.body.weight(.semibold).monospacedDigit())
-                            .foregroundColor(.secondary)
-                        Text("Grille Cipher")
-                            .font(.body.weight(.semibold))
-                        Spacer()
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8)
-                            .strokeBorder(.thinMaterial, lineWidth: 1)
-                    }
+                    .padding(.top, 12)
                 }
-                
-                Spacer()
             }
             .frame(maxHeight: .infinity)
             
