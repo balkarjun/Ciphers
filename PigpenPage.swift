@@ -10,10 +10,10 @@ import SwiftUI
 struct PigpenPage: View {
     @EnvironmentObject var state: AppState
 
-    let target = encrypt(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), shift: 10)
+    let target = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
     
     @State private var tapped: String = ""
-    @State var highlighted: String = encrypt(message: "V", shift: 10)
+    @State var highlighted: String = cshift(message: "V", by: 10)
     @State private var completedCharacters: Set<String> = [" ", ",", "\n"]
     
     var body: some View {

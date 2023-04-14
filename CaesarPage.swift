@@ -10,14 +10,14 @@ import SwiftUI
 struct CaesarPage: View {
     @EnvironmentObject var state: AppState
     
-    let encrypted = encrypt(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), shift: 10)
+    let encrypted = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
     
     let target = "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased()
     
     @State private var shift: Int = 0
     
     private var shifted: String {
-        encrypt(message: encrypted, shift: shift)
+        cshift(message: encrypted, by: shift)
     }
     
     var body: some View {
@@ -54,7 +54,7 @@ struct CaesarPage: View {
                             VStack(alignment: .leading) {
                                 Text("APPLE")
                                     .font(.title3.monospaced().weight(.semibold))
-                                Text(encrypt(message: "APPLE", shift: 1))
+                                Text(cshift(message: "APPLE", by: 1))
                                     .font(.title3.monospaced().weight(.semibold))
                                     .foregroundColor(.teal)
                             }
