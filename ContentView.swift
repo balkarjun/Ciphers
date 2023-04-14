@@ -15,7 +15,7 @@ struct ContentView: View {
             case .three:
                 GrillePage()
             case .four:
-                EmptyView()
+                FinalPage()
             }
         }
         .environmentObject(state)
