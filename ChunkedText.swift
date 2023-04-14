@@ -141,7 +141,7 @@ struct ChunkedCharacter: View {
                     .padding(.vertical, lineSpacing)
                     .background {
                         RoundedRectangle(cornerRadius: 2)
-                            .fill(.green.opacity(0.5))
+                            .fill(Color.accentColor.opacity(0.5))
                             .opacity(highlighted ? 1 : 0)
                     }
                 }

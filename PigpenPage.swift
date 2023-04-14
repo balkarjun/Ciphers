@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PigpenPage: View {
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var state: AppState
 
     let target = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
@@ -37,6 +38,7 @@ struct PigpenPage: View {
                         HStack(spacing: 16) {
                             PigpenCharacter(
                                 highlighted,
+                                lineColor: colorScheme == .dark ? .white : .black,
                                 charWidth: 60,
                                 charHeight: 60
                             )
@@ -64,15 +66,15 @@ struct PigpenPage: View {
                             .padding([.horizontal, .top])
                         
                         VStack(alignment: .leading, spacing: 0) {
-                            HStack(spacing: 8) {
-                                ForEach(Array("FINAL CUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
+                            HStack(spacing: 6) {
+                                ForEach(Array("FINALCUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
                                     Text(char)
-                                        .frame(width: 16)
+                                        .frame(width: 18)
                                 }
                             }
                             .font(.body.bold())
                             
-                            PigpenText("FINAL CUT", completed: [])
+                            PigpenText("FINALCUT", completed: [])
                         }
                         .padding()
                         

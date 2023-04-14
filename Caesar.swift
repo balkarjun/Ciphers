@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Caesar: View {
+    @Environment(\.colorScheme) private var colorScheme
     let characters: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
     @State private var currentAngle: Angle = .degrees(0)
@@ -17,7 +18,7 @@ struct Caesar: View {
 
     var body: some View {
         Circle()
-            .fill(Color(.systemGray4))
+            .fill(colorScheme == .dark ? Color(.systemGray6) : Color(.systemGray4))
             .frame(width: 360, height: 360)
             .overlay {
                 ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
@@ -41,7 +42,7 @@ struct Caesar: View {
             }
             .overlay {
                 Circle()
-                    .fill(Color(.systemGray6))
+                    .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
                     .frame(width: 280, height: 280)
                     .overlay {
                         ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
@@ -87,7 +88,7 @@ struct Caesar: View {
             }
             .overlay {
                 Circle()
-                    .fill(Color(.systemGray6))
+                    .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
                     .frame(width: 150, height: 150)
                     .overlay {
                         Circle()
