@@ -18,7 +18,7 @@ struct PigpenPage: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Image(systemName: "1.circle.fill")
                         .font(.body.weight(.bold))
@@ -32,58 +32,78 @@ struct PigpenPage: View {
                 .background(.mint.opacity(0.15))
                 .cornerRadius(8)
                 
-                HStack(spacing: 16) {
-                    PigpenCharacter(
-                        highlighted,
-                        charWidth: 60,
-                        charHeight: 60
-                    )
-                    .padding()
-                    .padding(.leading)
-                    .opacity(highlighted == "" ? 0 : 1)
-                    
-                    Rectangle()
-                        .fill(.quaternary.opacity(0.5))
-                        .frame(width: 2)
-                    
-                    PigpenText(
-                        target,
-                        highlighted: highlighted,
-                        completed: completedCharacters
-                    )
-                    .padding(.vertical)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.ultraThinMaterial)
-                .cornerRadius(8)
-                .fixedSize(horizontal: false, vertical: true)
-                
-                Text("In a ***Pigpen Cipher***, each character is replaced with a symbol, like a made-up language.")
-                    .padding([.horizontal, .top])
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 8) {
-                        ForEach(Array("APP STORE".map{ String($0) }.enumerated()), id: \.offset) { _, char in
-                            Text(char)
-                                .frame(width: 16)
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        HStack(spacing: 16) {
+                            PigpenCharacter(
+                                highlighted,
+                                charWidth: 60,
+                                charHeight: 60
+                            )
+                            .padding()
+                            .padding(.leading)
+                            .opacity(highlighted == "" ? 0 : 1)
+                            
+                            Rectangle()
+                                .fill(.quaternary.opacity(0.5))
+                                .frame(width: 2)
+                            
+                            PigpenText(
+                                target,
+                                highlighted: highlighted,
+                                completed: completedCharacters
+                            )
+                            .padding(.vertical)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(8)
+                        .fixedSize(horizontal: false, vertical: true)
+                        
+                        Text("In a ***Pigpen Cipher***, each letter is replaced with a symbol, like a made-up language.")
+                            .padding([.horizontal, .top])
+                        
+                        VStack(alignment: .leading, spacing: 0) {
+                            HStack(spacing: 8) {
+                                ForEach(Array("FINAL CUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
+                                    Text(char)
+                                        .frame(width: 16)
+                                }
+                            }
+                            .font(.body.bold())
+                            
+                            PigpenText("FINAL CUT", completed: [])
+                        }
+                        .padding()
+                        
+                        Text("To find the right symbols, use the keyboard grid to the right. The symbol for each letter is obtained from the lines surrounding that character in the grid.")
+                            .padding([.horizontal, .bottom])
+                        
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack {
+                                Image(systemName: "rectangle.and.hand.point.up.left.fill")
+                                    .symbolRenderingMode(.hierarchical)
+                                    .foregroundColor(.teal)
+                                    .font(.body.bold())
+                                
+                                Text("Match the Symbols")
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundColor(.teal)
+                                    .offset(y: -1)
+                            }
+                            Text("Using the keyboard provided, tap on the matching letter for the highlighted symbol to make sense of this cryptic message.")
+                            
+                            Text("***Hint***: The first letter is **F**")
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 8)
+                                .strokeBorder(.quaternary, lineWidth: 1)
                         }
                     }
-                    .font(.body.bold())
-                    
-                    PigpenText("APP STORE", completed: [])
+                    .padding(.top, 12)
                 }
-                .padding()
-                
-                Text("To find the right symbols, use the keyboard grid to the right. The symbol for each character is obtained from the lines surrounding that character in the grid.")
-                    .padding([.horizontal, .bottom])
-                Divider()
-                Text("Solve this part of the cipher by finding the right symbol for each highlighted character shown above, and using the keyboard to your right to enter it.")
-                    .padding()
-                
-                Text("***Hint***: The first character is **F**")
-                    .padding([.horizontal, .bottom])
-                
-                Spacer()
             }
             .frame(maxWidth: .infinity)
             

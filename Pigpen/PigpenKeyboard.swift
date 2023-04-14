@@ -13,8 +13,8 @@ struct PigpenSquareKeyboard: View {
     let characters: [String]
     var dotted: Bool = false
     
-    var width: Double = 160
-    var height: Double = 160
+    var width: Double = 200
+    var height: Double = 200
     var dotSize: Double = 7
     
     private let primaryColor: Color = .primary
@@ -36,7 +36,7 @@ struct PigpenSquareKeyboard: View {
                     } label: {
                         ZStack {
                             Text(character)
-                                .font(.title2.bold().monospaced())
+                                .font(.title2.monospaced().bold())
                                 .foregroundColor(.primary)
                                 .frame(width: width/3, height: height/3)
                             
@@ -78,8 +78,8 @@ struct PigpenTriangleKeyboard: View {
     let characters: [String]
     var dotted: Bool = false
     
-    var width: Double = 160
-    var height: Double = 160
+    var width: Double = 200
+    var height: Double = 200
     var dotSize: Double = 8
     
     func getOffset(for index: Int) -> CGSize {
@@ -112,7 +112,7 @@ struct PigpenTriangleKeyboard: View {
                     } label: {
                         ZStack {
                             Text(character)
-                                .font(.title2.bold())
+                                .font(.title2.monospaced().bold())
                                 .foregroundColor(.primary)
                                 .rotationEffect(.degrees(-45))
                                 .frame(width: width*1.1/3, height: height*1.1/3)
