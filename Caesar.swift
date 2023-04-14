@@ -17,7 +17,7 @@ struct Caesar: View {
 
     var body: some View {
         Circle()
-            .fill(.quaternary)
+            .fill(Color(.systemGray4))
             .frame(width: 360, height: 360)
             .overlay {
                 ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
@@ -26,9 +26,9 @@ struct Caesar: View {
                     let lineAngle = numericalOffset * (360.0 / Double(characters.count))
                     
                     Text(char)
-                        .font(.system(size: 16, weight: .semibold, design: .serif))
+                        .font(.body.monospaced().weight(.semibold))
                         .rotationEffect(.degrees(90))
-                        .offset(x: 150 + 16)
+                        .offset(x: 150 + 8)
                         .rotationEffect(.degrees(-90))
                         .rotationEffect(.degrees(angle))
                     
@@ -41,8 +41,8 @@ struct Caesar: View {
             }
             .overlay {
                 Circle()
-                    .fill(Color(red: 193/255, green: 193/255, blue: 195/255))
-                    .frame(width: 300, height: 300)
+                    .fill(Color(.systemGray6))
+                    .frame(width: 280, height: 280)
                     .overlay {
                         ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
                             let angle: Double = Double(index) * (360.0 / Double(characters.count))
@@ -50,9 +50,9 @@ struct Caesar: View {
                             let lineAngle: Double = numericalOffset * (360.0 / Double(characters.count))
 
                             Text(char)
-                                .font(.system(size: 16, weight: .semibold, design: .serif))
+                                .font(.body.monospaced().weight(.semibold))
                                 .rotationEffect(.degrees(90))
-                                .offset(x: 150 - 12)
+                                .offset(x: 150 - 24)
                                 .rotationEffect(.degrees(-90))
                                 .rotationEffect(.degrees(angle))
                             
@@ -85,38 +85,38 @@ struct Caesar: View {
                             }
                     )
             }
+            .overlay {
+                Circle()
+                    .fill(Color(.systemGray6))
+                    .frame(width: 150, height: 150)
+                    .overlay {
+                        Circle()
+                            .strokeBorder(.quaternary, lineWidth: 1)
+                    }
+                    .onTapGesture {
+                        shift = 0
+                        withAnimation {
+                            currentAngle = .degrees(0)
+                            finalAngle = .degrees(-0.1)
+                        }
+                    }
+                
+                Text(shift, format: .number)
+                    .font(.title3.monospaced().bold())
+            }
     }
 }
 
-func encrypt(message: String, shift: Int) -> String {
-    func shiftLetter(ucs: UnicodeScalar) -> UnicodeScalar {
-        let firstLetter = Int(UnicodeScalar("A").value)
-        let lastLetter = Int(UnicodeScalar("Z").value)
-        let letterCount = lastLetter - firstLetter + 1
-        
-        let value = Int(ucs.value)
-        switch value {
-        case firstLetter...lastLetter:
-            // Offset relative to first letter:
-            var offset = value - firstLetter
-            // Apply shift amount (can be positive or negative):
-            offset += shift
-            // Transform back to the range firstLetter...lastLetter:
-            offset = (offset % letterCount + letterCount) % letterCount
-            // Return corresponding character:
-            return UnicodeScalar(firstLetter + offset)!
-        default:
-            // Not in the range A...Z, leave unchanged:
-            return ucs
-        }
-    }
+struct CaesarTest: View {
+    @State private var shift: Int = 0
     
-    let shifted = message.uppercased().unicodeScalars.map(shiftLetter)
-    return String(String.UnicodeScalarView(shifted))
+    var body: some View {
+        Caesar(shift: $shift)
+    }
 }
 
 struct Caesar_Previews: PreviewProvider {
     static var previews: some View {
-        Caesar(shift: .constant(0))
+        CaesarTest()
     }
 }
