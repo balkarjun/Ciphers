@@ -12,6 +12,7 @@ enum ProgressStage {
 }
 
 struct FinalPage: View {
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject var state: AppState
     
     let encrypted = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
@@ -58,16 +59,31 @@ struct FinalPage: View {
         stage == .zero
     }
     
+    private var primaryColor: Color {
+        (colorScheme == .dark) ? .white : .black
+    }
+    
     var body: some View {
         SplitView(page: .four, disabled: false) {
             state.page = .zero
         } leading: {
             VStack(alignment: .leading) {
-                ChunkedText(
+                ChunkedTextV2(
                     text: text,
-                    chunkSize: lineLength,
-                    pigpen: isPigpen
-                )
+                    limit: screenWidth
+                ) { char in
+                    Group {
+                        if isPigpen {
+                            PigpenCharacter(
+                                char,
+                                lineColor: primaryColor
+                            )
+                        } else {
+                            Text(char)
+                                .font(.title3.monospaced().weight(.semibold))
+                        }
+                    }
+                }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     Color.clear.measureSize { screenWidth = $0.width }
