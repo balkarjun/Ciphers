@@ -49,40 +49,72 @@ struct PigpenPage: View {
                 .cornerRadius(8)
                 .fixedSize(horizontal: false, vertical: true)
                 
-                Text("In a ***Pigpen Cipher***, each letter is replaced with a symbol, like a made-up language.")
-                    .padding([.horizontal, .top])
+                InteractionPrompt(
+                    symbol: "rectangle.and.hand.point.up.left.fill",
+                    title: "Match the Symbols",
+                    description: "Using the keyboard in the interactive area, tap on the matching letter for the symbols highlighted above, to make sense of this cryptic message."
+                )
                 
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 6) {
-                        ForEach(Array("FINALCUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
+                Text("These funny looking symbols come from the ***Pigpen Cipher***, where each letter in the message is replaced by a symbol. Here's an example:")
+                    .padding()
+                
+                HStack(spacing: 0) {
+                    ForEach(Array("FINALCUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
+                        VStack(spacing: 0) {
                             Text(char)
                                 .frame(width: 18)
+                                .padding(.horizontal, 3)
+                                .font(.body.bold())
+                            
+                            PigpenCharacter(char, lineColor: .teal)
                         }
                     }
-                    .font(.body.bold())
-                    
-                    PigpenText("FINALCUT", completed: [])
                 }
-                .padding()
+                .frame(maxWidth: .infinity)
+                .padding(.bottom)
                 
-                Text("To find the right symbols, use the keyboard grid to the right. The symbol for each letter is obtained from the lines surrounding that character in the grid.")
-                    .padding([.horizontal, .bottom])
+                Text("To decode this message, we need to find the matching letter for each symbol. You can find the symbol for each letter from the lines surrounding that letter in the keyboard grid, in the interactive area to your right.")
+                    .padding(.horizontal)
+                
+                HStack {
+                    HStack {
+                        Text("P")
+                            .font(.body.bold())
+                        
+                        PigpenCharacter("P")
+                    }
+                    .padding(.horizontal)
+                    
+                    Text("For example, the letter ***P*** is surrounded by lines to the top and to the right, and also contains a circular dot.")
+                }
+                .padding(.horizontal)
+                
+                HStack {
+                    HStack {
+                        Text("S")
+                            .font(.body.bold())
+                        
+                        PigpenCharacter("S")
+                    }
+                    .padding(.horizontal)
+                    
+                    Text("The letter ***S*** has angled lines to it's bottom left and bottom right.")
+                }
+                .padding(.horizontal)
                 
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Image(systemName: "rectangle.and.hand.point.up.left.fill")
+                        Image(systemName: "sparkles")
                             .symbolRenderingMode(.hierarchical)
-                            .foregroundColor(.teal)
+                            .foregroundColor(.primary)
                             .font(.body.bold())
                         
-                        Text("Match the Symbols")
+                        Text("Hint")
                             .font(.subheadline.weight(.semibold))
-                            .foregroundColor(.teal)
-                            .offset(y: -1)
+                            .foregroundColor(.primary)
                     }
-                    Text("Using the keyboard provided, tap on the matching letter for the highlighted symbol to make sense of this cryptic message.")
                     
-                    Text("***Hint***: The first letter is **F**")
+                    Text("The first letter in the message is ***F***, so start by tapping on the letter F in the keyboard grid in the interactive area.")
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -90,6 +122,8 @@ struct PigpenPage: View {
                     RoundedRectangle(cornerRadius: 8)
                         .strokeBorder(.quaternary, lineWidth: 1)
                 }
+
+                Spacer()
             }
         } trailing: {
             VStack(spacing: 0) {
@@ -98,13 +132,12 @@ struct PigpenPage: View {
                     completed: completedCharacters
                 )
                 .padding()
-                .padding(8)
+                .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
                 }
-                .padding()
                 Spacer()
                 VStack(spacing: 24) {
                     HStack(spacing: 24) {
@@ -134,6 +167,16 @@ struct PigpenPage: View {
                     }
                 }
                 Spacer()
+                
+                HStack {
+                    Image(systemName: "hand.tap.fill")
+                        .font(.body.bold())
+                    
+                    Text("Tap on the matching letter")
+                        .font(.callout.monospaced())
+                }
+                .padding()
+                .foregroundColor(.secondary)
             }
         }
         .onChange(of: tapped) { _ in
@@ -203,11 +246,11 @@ struct AnswerField: View {
     var body: some View {
         ZStack {
             Text(displayedText)
-                .font(.title2.monospaced())
+                .font(.title3.monospaced())
                 .fontWeight(.medium)
             
             Text(placeholder)
-                .font(.title2.monospaced())
+                .font(.title3.monospaced())
                 .fontWeight(.medium)
                 .foregroundColor(.secondary)
         }

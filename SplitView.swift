@@ -19,6 +19,8 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
     private var actionName: String {
         if page == .four {
             return "Play Again"
+        } else if page == .zero {
+            return "Start"
         }
         
         return "Next"
@@ -86,7 +88,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                 .background(.mint.opacity(0.15))
                 .cornerRadius(8)
                 
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     leading()
                         .padding(.top, 12)
                 }

@@ -29,7 +29,7 @@ struct GrilleText: View {
 }
 
 struct GrillePaper: View {
-    let initialOffset: CGSize = .init(width: 0, height: 100)
+    let initialOffset: CGSize = .init(width: 0, height: 180)
     let text = "...... ......h ....s o. ....t.\n.....n .. ...i. ...... ... c...\n.a... .... ...m ....".uppercased()
 
     let limit: Double

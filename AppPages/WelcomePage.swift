@@ -17,19 +17,13 @@ struct WelcomePage: View {
             state.nextPage()
         } leading: {
             VStack(alignment: .leading) {
-                Text("A ***cipher*** is a way to disguise a message and conceal it's meaning.")
-                    .padding()
-                
                 PigpenText(target)
                     .padding()
                     .background(.ultraThinMaterial)
                     .cornerRadius(8)
                 
-                Text("This cryptic message above contains a secret key that we're interested in.")
+                Text("A ***cipher*** is a way to disguise a message and conceal it's meaning. Hidden within the cryptic message above, is a secret keyword that we're interested in.\n\nThrough a series of interactive tutorials, you will learn about the various ciphers that were used to encode this message, and decode it one step at a time, until you find the hidden keyword.")
                     .padding()
-                
-                Text("Through these series of tutorials, you will learn about some of the various ciphers used throughout history and uncover the hidden message one step at a time.")
-                    .padding([.horizontal, .bottom])
                 
                 VStack(alignment: .leading) {
                     HStack {

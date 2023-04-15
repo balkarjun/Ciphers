@@ -38,7 +38,7 @@ struct FinalPage: View {
         return Int(screenWidth / (charWidth + kerning))
     }
     
-    @State private var stage: ProgressStage = .zero
+    @State private var stage: ProgressStage = .four
     
     private var text: String {
         switch stage {
@@ -68,6 +68,9 @@ struct FinalPage: View {
             state.page = .zero
         } leading: {
             VStack(alignment: .leading) {
+                Text("**Congratulations!**\nUsing Pigpen, Caesar and Grille Ciphers, you decoded the message and found the secret key. Hope you had fun learning about these ciphers along the way.\n\nYou can view the results of each stage using the buttons to the right, or play again from the beginnning.")
+                    .padding()
+                
                 ChunkedText(
                     text: text,
                     limit: screenWidth
@@ -91,12 +94,6 @@ struct FinalPage: View {
                 .padding()
                 .background(.ultraThinMaterial)
                 .cornerRadius(8)
-                
-                Text("You've solved the puzzle! Using Pigpen, Caesar and Grille Ciphers, you uncovered the hidden message and found the secret key.")
-                    .padding()
-                
-                Text("You can view the results of each stage using the buttons to the right, or play again from the beginnning.")
-                    .padding(.horizontal)
             }
         } trailing: {
             VStack {
@@ -163,7 +160,7 @@ struct StageButton: View {
                 Image(systemName: symbol)
                     .font(.title3.weight(.bold))
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(isActive ? .teal : .secondary)
 
                 Text(description)
                     .font(.body.weight(.semibold))
@@ -171,8 +168,7 @@ struct StageButton: View {
                     .foregroundColor(.primary)
             }
             .padding()
-            .background(.thinMaterial)
-            .background(isActive ? .mint.opacity(0.15) : .clear)
+            .background(isActive ? .teal.opacity(0.15) : .clear)
             .cornerRadius(8)
         }
     }

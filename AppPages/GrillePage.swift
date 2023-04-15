@@ -27,25 +27,28 @@ struct GrillePage: View {
                     .background(.ultraThinMaterial)
                     .cornerRadius(8)
                 
-                Text("In a ***Grille Cipher***, the message is hidden in plain sight, and is visible when viewed through a stencil or piece of paper with holes in it.")
-                    .padding([.horizontal, .top])
+                InteractionPrompt(
+                    symbol: "rectangle.and.hand.point.up.left.fill",
+                    title: "Find the Secret Keyword",
+                    description: "Align the stencil with the text to uncover the secret keyword. Once you find it, type it into the text field."
+                )
                 
+                Text("The message is now readable, but how do we find the secret key? The secret keyword might lie within this message, hidden in plain sight.\n\nThis is called Steganography, and the message above uses in particular a ***Grille Cipher***, where the secret becomes visible when the message is viewed through a stencil or a piece paper with holes in it.\n\nWe simply need to view the message using the given stencil, and decode it to find the secret keyword.")
+                    .padding()
                 
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Image(systemName: "rectangle.and.hand.point.up.left.fill")
+                        Image(systemName: "sparkles")
                             .symbolRenderingMode(.hierarchical)
-                            .foregroundColor(.teal)
+                            .foregroundColor(.primary)
                             .font(.body.bold())
                         
-                        Text("Find the Hidden Key")
+                        Text("Hint")
                             .font(.subheadline.weight(.semibold))
-                            .foregroundColor(.teal)
-                            .offset(y: -1)
+                            .foregroundColor(.primary)
                     }
-                    Text("Align the stencil with the text to uncover the secret key.")
                     
-                    Text("***Hint***: Make sure you read the message. It holds the clue as to how to decode the message.")
+                    Text("Make sure you read what the message says. It holds the clue to finding the secret keyword.")
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,8 +61,18 @@ struct GrillePage: View {
             VStack {
                 GrilleText()
                     .padding()
-                    .padding()
+                
                 Spacer()
+
+                HStack {
+                    Image(systemName: "hand.point.up.left.fill")
+                        .font(.body.bold())
+                    
+                    Text("Touch and drag the stencil around")
+                        .font(.callout.monospaced())
+                }
+                .padding()
+                .foregroundColor(.secondary)
                 
                 TextField("Enter the key here...", text: $answer)
                     .font(.body.monospaced())
