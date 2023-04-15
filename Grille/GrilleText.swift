@@ -13,7 +13,7 @@ struct GrilleText: View {
     @State private var screenWidth: Double = 0
     
     var body: some View {
-        ChunkedTextV2(text: text, limit: screenWidth) { char in
+        ChunkedText(text: text, limit: screenWidth) { char in
             Text(char)
                 .font(.title3.monospaced().weight(.semibold))
         }
@@ -50,7 +50,7 @@ struct GrillePaper: View {
     }
     
     var body: some View {
-        ChunkedTextV2(text: text, limit: limit) { char in
+        ChunkedText(text: text, limit: limit) { char in
             Rectangle()
                 .fill(.clear)
                 .background(getColor(for: char))

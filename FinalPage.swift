@@ -68,7 +68,7 @@ struct FinalPage: View {
             state.page = .zero
         } leading: {
             VStack(alignment: .leading) {
-                ChunkedTextV2(
+                ChunkedText(
                     text: text,
                     limit: screenWidth
                 ) { char in

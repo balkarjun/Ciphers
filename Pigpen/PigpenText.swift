@@ -39,7 +39,7 @@ struct PigpenText: View {
     }
     
     var body: some View {
-        ChunkedTextV2(text: text, limit: screenWidth) { char in
+        ChunkedText(text: text, limit: screenWidth) { char in
             PigpenCharacter(
                 char,
                 lineColor: lineColor(for: char)
