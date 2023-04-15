@@ -21,122 +21,81 @@ struct CaesarPage: View {
     }
     
     var body: some View {
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 0) {
+        SplitView(page: .two, disabled: shifted != target) {
+            state.nextPage()
+        } leading: {
+            VStack(alignment: .leading) {
+                Text(encrypted)
+                    .font(.title3.monospaced())
+                    .fontWeight(.medium)
+                    .padding()
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(8)
+                
+                Text("In a ***Caesar Cipher***, each letter is replaced by a letter a fixed number of positions down the alphabet.")
+                    .padding()
+                
                 HStack {
-                    Image(systemName: "2.circle.fill")
-                        .font(.body.weight(.bold))
-                        .foregroundColor(.teal)
+                    VStack(alignment: .leading) {
+                        Text("APPLE")
+                            .font(.title3.monospaced().weight(.semibold))
+                        Text(cshift(message: "APPLE", by: 1))
+                            .font(.title3.monospaced().weight(.semibold))
+                            .foregroundColor(.teal)
+                    }
+                    .padding(.leading)
                     
-                    Text("Caesar Cipher")
-                        .font(.body.weight(.semibold))
+                    Text("Here, each letter of the word ***APPLE*** is shifted by **1** position.\nA is shifted to B, L is shifted to M, and so on..")
+                        .padding(.horizontal)
+                }
+                
+                Text("The encrypted message above seems to be shifted by some unknown amount.")
+                    .padding()
+                
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Image(systemName: "rectangle.and.hand.point.up.left.fill")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundColor(.teal)
+                            .font(.body.bold())
+                        
+                        Text("Decipher the Message")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(.teal)
+                            .offset(y: -1)
+                    }
+                    Text("Use the wheel to shift each letter in the message, until it makes sense.")
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.mint.opacity(0.15))
-                .cornerRadius(8)
-                
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        Text(encrypted)
-                            .font(.title3.monospaced())
-                            .fontWeight(.medium)
-                            .padding()
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(8)
-                        
-                        Text("In a ***Caesar Cipher***, each letter is replaced by a letter a fixed number of positions down the alphabet.")
-                            .padding()
-                        
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("APPLE")
-                                    .font(.title3.monospaced().weight(.semibold))
-                                Text(cshift(message: "APPLE", by: 1))
-                                    .font(.title3.monospaced().weight(.semibold))
-                                    .foregroundColor(.teal)
-                            }
-                            .padding(.leading)
-                            
-                            Text("Here, each letter of the word ***APPLE*** is shifted by **1** position.\nA is shifted to B, L is shifted to M, and so on..")
-                                .padding(.horizontal)
-                        }
-                        
-                        Text("The encrypted message above seems to be shifted by some unknown amount.")
-                            .padding()
-                        
-                        VStack(alignment: .leading, spacing: 6) {
-                            HStack {
-                                Image(systemName: "rectangle.and.hand.point.up.left.fill")
-                                    .symbolRenderingMode(.hierarchical)
-                                    .foregroundColor(.teal)
-                                    .font(.body.bold())
-                                
-                                Text("Decipher the Message")
-                                    .font(.subheadline.weight(.semibold))
-                                    .foregroundColor(.teal)
-                                    .offset(y: -1)
-                            }
-                            Text("Use the wheel to shift each letter in the message, until it makes sense.")
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 8)
-                                .strokeBorder(.quaternary, lineWidth: 1)
-                        }
-                        Spacer()
-                    }
-                    .padding(.top, 12)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(.quaternary, lineWidth: 1)
                 }
             }
-            .frame(maxWidth: .infinity)
-            
+        } trailing: {
             VStack {
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .strokeBorder(.mint.opacity(0.2), lineWidth: 1)
+                Text(shifted)
+                    .font(.title3.monospaced())
+                    .fontWeight(.medium)
+                    .padding()
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .overlay {
-                        VStack {
-                            Text(shifted)
-                                .font(.title3.monospaced())
-                                .fontWeight(.medium)
-                                .padding()
-                                .padding()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
-                                }
-                                .padding()
-                            
-                            Spacer()
-                            
-                            Caesar(shift: $shift)
-                            
-                            Spacer()
-                        }
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
                     }
+                    .padding()
                 
-                Button(action: state.nextPage) {
-                    HStack {
-                        Text("Next")
-                            .font(.body.bold())
-                        Spacer()
-                        Image(systemName: "arrow.right")
-                            .font(.body.bold())
-                    }
-                    .padding(8)
-                    .frame(maxWidth: .infinity)
-                }
-                .disabled(shifted != target)
-                .buttonStyle(.borderedProminent)
-                .tint(.teal)
+                Spacer()
+                
+                Caesar(shift: $shift)
+                
+                Spacer()
             }
-            .frame(maxWidth: .infinity)
         }
-        .padding()
     }
 }
 

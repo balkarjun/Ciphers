@@ -18,164 +18,124 @@ struct PigpenPage: View {
     @State private var completedCharacters: Set<String> = [" ", ",", "\n"]
     
     var body: some View {
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    Image(systemName: "1.circle.fill")
-                        .font(.body.weight(.bold))
-                        .foregroundColor(.teal)
+        SplitView(page: .one, disabled: highlighted != "") {
+            state.nextPage()
+        } leading: {
+            VStack(alignment: .leading) {
+                HStack(spacing: 16) {
+                    PigpenCharacter(
+                        highlighted,
+                        lineColor: colorScheme == .dark ? .white : .black,
+                        charWidth: 60,
+                        charHeight: 60
+                    )
+                    .padding()
+                    .padding(.leading)
+                    .opacity(highlighted == "" ? 0 : 1)
                     
-                    Text("Pigpen Cipher")
-                        .font(.body.weight(.semibold))
+                    Rectangle()
+                        .fill(.quaternary.opacity(0.5))
+                        .frame(width: 2)
+                    
+                    PigpenText(
+                        target,
+                        highlighted: highlighted,
+                        completed: completedCharacters
+                    )
+                    .padding(.vertical)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.ultraThinMaterial)
+                .cornerRadius(8)
+                .fixedSize(horizontal: false, vertical: true)
+                
+                Text("In a ***Pigpen Cipher***, each letter is replaced with a symbol, like a made-up language.")
+                    .padding([.horizontal, .top])
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(spacing: 6) {
+                        ForEach(Array("FINALCUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
+                            Text(char)
+                                .frame(width: 18)
+                        }
+                    }
+                    .font(.body.bold())
+                    
+                    PigpenText("FINALCUT", completed: [])
+                }
+                .padding()
+                
+                Text("To find the right symbols, use the keyboard grid to the right. The symbol for each letter is obtained from the lines surrounding that character in the grid.")
+                    .padding([.horizontal, .bottom])
+                
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack {
+                        Image(systemName: "rectangle.and.hand.point.up.left.fill")
+                            .symbolRenderingMode(.hierarchical)
+                            .foregroundColor(.teal)
+                            .font(.body.bold())
+                        
+                        Text("Match the Symbols")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(.teal)
+                            .offset(y: -1)
+                    }
+                    Text("Using the keyboard provided, tap on the matching letter for the highlighted symbol to make sense of this cryptic message.")
+                    
+                    Text("***Hint***: The first letter is **F**")
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.mint.opacity(0.15))
-                .cornerRadius(8)
-                
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        HStack(spacing: 16) {
-                            PigpenCharacter(
-                                highlighted,
-                                lineColor: colorScheme == .dark ? .white : .black,
-                                charWidth: 60,
-                                charHeight: 60
-                            )
-                            .padding()
-                            .padding(.leading)
-                            .opacity(highlighted == "" ? 0 : 1)
-                            
-                            Rectangle()
-                                .fill(.quaternary.opacity(0.5))
-                                .frame(width: 2)
-                            
-                            PigpenText(
-                                target,
-                                highlighted: highlighted,
-                                completed: completedCharacters
-                            )
-                            .padding(.vertical)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(8)
-                        .fixedSize(horizontal: false, vertical: true)
-                        
-                        Text("In a ***Pigpen Cipher***, each letter is replaced with a symbol, like a made-up language.")
-                            .padding([.horizontal, .top])
-                        
-                        VStack(alignment: .leading, spacing: 0) {
-                            HStack(spacing: 6) {
-                                ForEach(Array("FINALCUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
-                                    Text(char)
-                                        .frame(width: 18)
-                                }
-                            }
-                            .font(.body.bold())
-                            
-                            PigpenText("FINALCUT", completed: [])
-                        }
-                        .padding()
-                        
-                        Text("To find the right symbols, use the keyboard grid to the right. The symbol for each letter is obtained from the lines surrounding that character in the grid.")
-                            .padding([.horizontal, .bottom])
-                        
-                        VStack(alignment: .leading, spacing: 6) {
-                            HStack {
-                                Image(systemName: "rectangle.and.hand.point.up.left.fill")
-                                    .symbolRenderingMode(.hierarchical)
-                                    .foregroundColor(.teal)
-                                    .font(.body.bold())
-                                
-                                Text("Match the Symbols")
-                                    .font(.subheadline.weight(.semibold))
-                                    .foregroundColor(.teal)
-                                    .offset(y: -1)
-                            }
-                            Text("Using the keyboard provided, tap on the matching letter for the highlighted symbol to make sense of this cryptic message.")
-                            
-                            Text("***Hint***: The first letter is **F**")
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 8)
-                                .strokeBorder(.quaternary, lineWidth: 1)
-                        }
-                    }
-                    .padding(.top, 12)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(.quaternary, lineWidth: 1)
                 }
             }
-            .frame(maxWidth: .infinity)
-            
-            VStack {
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .strokeBorder(.mint.opacity(0.2), lineWidth: 1)
-                    .overlay {
-                        VStack(spacing: 0) {
-                            AnswerField(
-                                target: target,
-                                completed: completedCharacters
-                            )
-                            .padding()
-                            .padding(8)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
-                            }
-                            .padding()
-                            Spacer()
-                            VStack(spacing: 24) {
-                                HStack(spacing: 24) {
-                                    PigpenSquareKeyboard(
-                                        tapped: $tapped,
-                                        characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
-                                    )
-                                    
-                                    PigpenSquareKeyboard(
-                                        tapped: $tapped,
-                                        characters: ["J", "K", "L", "M", "N", "O", "P", "Q", "R"],
-                                        dotted: true
-                                    )
-                                }
-                                
-                                HStack(spacing: 24) {
-                                    PigpenTriangleKeyboard(
-                                        tapped: $tapped,
-                                        characters: ["S", "T", "U", "V"]
-                                    )
-                                    
-                                    PigpenTriangleKeyboard(
-                                        tapped: $tapped,
-                                        characters: ["W", "X", "Y", "Z"],
-                                        dotted: true
-                                    )
-                                }
-                            }
-                            Spacer()
-                        }
-                    }
-                
-                Button(action: state.nextPage) {
-                    HStack {
-                        Text("Next")
-                            .font(.body.bold())
-                        Spacer()
-                        Image(systemName: "arrow.right")
-                            .font(.body.bold())
-                    }
-                    .padding(8)
-                    .frame(maxWidth: .infinity)
+        } trailing: {
+            VStack(spacing: 0) {
+                AnswerField(
+                    target: target,
+                    completed: completedCharacters
+                )
+                .padding()
+                .padding(8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.teal)
-                .disabled(highlighted != "")
+                .padding()
+                Spacer()
+                VStack(spacing: 24) {
+                    HStack(spacing: 24) {
+                        PigpenSquareKeyboard(
+                            tapped: $tapped,
+                            characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
+                        )
+                        
+                        PigpenSquareKeyboard(
+                            tapped: $tapped,
+                            characters: ["J", "K", "L", "M", "N", "O", "P", "Q", "R"],
+                            dotted: true
+                        )
+                    }
+                    
+                    HStack(spacing: 24) {
+                        PigpenTriangleKeyboard(
+                            tapped: $tapped,
+                            characters: ["S", "T", "U", "V"]
+                        )
+                        
+                        PigpenTriangleKeyboard(
+                            tapped: $tapped,
+                            characters: ["W", "X", "Y", "Z"],
+                            dotted: true
+                        )
+                    }
+                }
+                Spacer()
             }
-            .frame(maxHeight: .infinity)
         }
-        .padding()
         .onChange(of: tapped) { _ in
             // check if the correct character was entered
             if tapped != highlighted {

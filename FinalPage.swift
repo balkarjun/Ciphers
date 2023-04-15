@@ -59,86 +59,44 @@ struct FinalPage: View {
     }
     
     var body: some View {
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    Image(systemName: "4.circle.fill")
-                        .font(.body.weight(.bold))
-                        .foregroundColor(.teal)
-                    
-                    Text("Congratulations")
-                        .font(.body.weight(.semibold))
+        SplitView(page: .four, disabled: false) {
+            state.page = .zero
+        } leading: {
+            VStack(alignment: .leading) {
+                ChunkedText(
+                    text: text,
+                    chunkSize: lineLength,
+                    pigpen: isPigpen
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay {
+                    Color.clear.measureSize { screenWidth = $0.width }
                 }
                 .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.mint.opacity(0.15))
+                .background(.ultraThinMaterial)
                 .cornerRadius(8)
                 
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        ChunkedText(
-                            text: text,
-                            chunkSize: lineLength,
-                            pigpen: isPigpen
-                        )
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .overlay {
-                            Color.clear.measureSize { screenWidth = $0.width }
-                        }
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(8)
-                        
-                        Text("You've solved the puzzle! Using Pigpen, Caesar and Grille Ciphers, you uncovered the hidden message and found the secret key.")
-                            .padding()
-                        
-                        Text("You can view the results of each stage using the buttons to the right, or play again from the beginnning.")
-                            .padding(.horizontal)
-                    }
-                    .padding(.top, 12)
-                }
-            }
-            .frame(maxWidth: .infinity)
-
-            VStack {
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .strokeBorder(.mint.opacity(0.2), lineWidth: 1)
-                    .overlay {
-                        VStack {
-                            StageButton(stage: .zero, activeStage: $stage)
-
-                            StageButton(stage: .one, activeStage: $stage)
-
-                            StageButton(stage: .two, activeStage: $stage)
-                            
-                            StageButton(stage: .three, activeStage: $stage)
-                            
-                            StageButton(stage: .four, activeStage: $stage)
-                            
-                            Spacer()
-                        }
-                        .padding()
-                    }
+                Text("You've solved the puzzle! Using Pigpen, Caesar and Grille Ciphers, you uncovered the hidden message and found the secret key.")
+                    .padding()
                 
-                Button {
-                    state.page = .zero
-                } label: {
-                    HStack {
-                        Text("Play Again")
-                            .font(.body.bold())
-                        Spacer()
-                        Image(systemName: "arrow.clockwise")
-                            .font(.body.bold())
-                    }
-                    .padding(8)
-                    .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.teal)
+                Text("You can view the results of each stage using the buttons to the right, or play again from the beginnning.")
+                    .padding(.horizontal)
             }
-            .frame(maxWidth: .infinity)
+        } trailing: {
+            VStack {
+                StageButton(stage: .zero, activeStage: $stage)
+
+                StageButton(stage: .one, activeStage: $stage)
+
+                StageButton(stage: .two, activeStage: $stage)
+                
+                StageButton(stage: .three, activeStage: $stage)
+                
+                StageButton(stage: .four, activeStage: $stage)
+                
+                Spacer()
+            }
         }
-        .padding()
     }
 }
 
