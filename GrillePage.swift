@@ -56,7 +56,7 @@ struct GrillePage: View {
             }
         } trailing: {
             VStack {
-                Grille()
+                GrilleText()
                     .padding()
                     .padding()
                 Spacer()

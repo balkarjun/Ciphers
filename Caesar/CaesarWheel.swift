@@ -116,7 +116,7 @@ struct CaesarTest: View {
     }
 }
 
-struct Caesar_Previews: PreviewProvider {
+struct CaesarWheel_Previews: PreviewProvider {
     static var previews: some View {
         CaesarTest()
     }
