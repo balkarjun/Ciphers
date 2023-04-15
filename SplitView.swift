@@ -14,6 +14,8 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
     var leading: () -> LeadingView
     var trailing: () -> TrailingView
     
+    @State private var aboutSheetShown: Bool = false
+    
     private var actionName: String {
         if page == .four {
             return "Play Again"
@@ -70,6 +72,14 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                     
                     Text(pageName)
                         .font(.body.weight(.semibold))
+                    
+                    Spacer()
+                    Button {
+                        aboutSheetShown = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .font(.body.weight(.medium))
+                    }
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -110,6 +120,9 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
             .frame(maxWidth: .infinity)
         }
         .padding()
+        .sheet(isPresented: $aboutSheetShown) {
+            AppInfo()
+        }
     }
 }
 
