@@ -91,6 +91,6 @@ struct CaesarPage: View {
 struct CaesarPage_Previews: PreviewProvider {
     static var previews: some View {
         CaesarPage()
-            .previewInterfaceOrientation(.landscapeLeft)        
+            .previewInterfaceOrientation(.landscapeLeft)            .environmentObject(AppState())
     }
 }

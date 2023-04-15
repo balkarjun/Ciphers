@@ -175,5 +175,6 @@ struct FinalPage_Previews: PreviewProvider {
     static var previews: some View {
         FinalPage()
             .previewInterfaceOrientation(.landscapeLeft)
+            .environmentObject(AppState())
     }
 }

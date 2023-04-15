@@ -90,5 +90,6 @@ struct WelcomePage_Previews: PreviewProvider {
     static var previews: some View {
         WelcomePage()
             .previewInterfaceOrientation(.landscapeLeft)
+            .environmentObject(AppState())
     }
 }

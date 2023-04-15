@@ -90,5 +90,6 @@ struct GrillePage_Previews: PreviewProvider {
     static var previews: some View {
         GrillePage()
             .previewInterfaceOrientation(.landscapeLeft)
+            .environmentObject(AppState())
     }
 }

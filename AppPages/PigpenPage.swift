@@ -258,5 +258,6 @@ struct PigpenPage_Previews: PreviewProvider {
     static var previews: some View {
         PigpenPage()
             .previewInterfaceOrientation(.landscapeLeft)
+            .environmentObject(AppState())
     }
 }
