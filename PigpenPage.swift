@@ -22,15 +22,15 @@ struct PigpenPage: View {
             state.nextPage()
         } leading: {
             VStack(alignment: .leading) {
-                HStack(spacing: 16) {
+                HStack(spacing: 0) {
                     PigpenCharacter(
                         highlighted,
-                        lineColor: colorScheme == .dark ? .white : .black,
-                        charWidth: 60,
-                        charHeight: 60
+                        lineColor: colorScheme == .dark ? .white : .black
                     )
+                    .scaleEffect(2.5)
                     .padding()
-                    .padding(.leading)
+                    .padding()
+                    .padding(.horizontal)
                     .opacity(highlighted == "" ? 0 : 1)
                     
                     Rectangle()
@@ -42,7 +42,7 @@ struct PigpenPage: View {
                         highlighted: highlighted,
                         completed: completedCharacters
                     )
-                    .padding(.vertical)
+                    .padding()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.ultraThinMaterial)

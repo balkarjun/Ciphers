@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PigpenText: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     private let text: String
     private let highlighted: String
     private let completed: Set<String>
@@ -18,45 +20,45 @@ struct PigpenText: View {
         self.completed = completed
     }
     
-    private let charWidth: Double = 18
-    private let charHeight: Double = 18
-    // space between two consecutive characters
-    private let kerning: Double = 6
-    // space between rows of characters
-    private let lineSpacing: Double = 0
-    
     @State private var screenWidth: Double = 0
     
-    // number of characters that can fit in a line
-    private var lineLength: Int {
-        if screenWidth == 0 { return 1 }
-
-        return Int(screenWidth / (charWidth + kerning))
+    private func highlightColor(for char: String) -> Color {
+        let isHighlighted = highlighted.contains(char)
+        
+        return isHighlighted ? Color.accentColor.opacity(0.5) : .clear
+    }
+    
+    private func lineColor(for char: String) -> Color {
+        
+        let isCompleted = completed.contains(char)
+        
+        let primary: Color = (colorScheme == .dark) ? .white : .black
+        let secondary: Color = Color(.systemGray)
+        
+        return isCompleted ? secondary : primary
     }
     
     var body: some View {
-        ChunkedText(text: text, chunkSize: lineLength, charWidth: charWidth, charHeight: charHeight, pigpen: true, highlighted: highlighted, completed: completed)
+        ChunkedTextV2(text: text, limit: screenWidth) { char in
+            PigpenCharacter(
+                char,
+                lineColor: lineColor(for: char)
+            )
+            .background {
+                RoundedRectangle(cornerRadius: 2, style: .continuous)
+                    .fill(highlightColor(for: char))
+                    .scaleEffect(x: 1.25, y: 1.5)
+            }
+        }
         .frame(maxWidth: .infinity, alignment: .leading)
         .overlay {
             Color.clear.measureSize { screenWidth = $0.width }
         }
     }
-    
-    private var BlankSpaceCharacter: some View {
-        Rectangle()
-            .fill(.clear)
-            .frame(width: charWidth, height: charHeight)
-    }
-    
-    private var CommaCharacter: some View {
-        Text(",")
-            .font(.system(size: 25, weight: .bold))
-            .frame(width: charWidth, height: charHeight)
-    }
 }
 
 struct PigpenText_Previews: PreviewProvider {
     static var previews: some View {
-        PigpenText("Sphinx of black quartz, judge my vow", highlighted: "A", completed: ["Q"])
+        PigpenText("Sphinx of black quartz, judge my vow".uppercased(), highlighted: "A", completed: ["Q"])
     }
 }
