@@ -1,5 +1,5 @@
 //
-//  Caesar.swift
+//  CaesarWheel.swift
 //  Ciphers
 //
 //  Created by Arjun B on 31/03/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Caesar: View {
+struct CaesarWheel: View {
     @Environment(\.colorScheme) private var colorScheme
     let characters: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
@@ -112,7 +112,7 @@ struct CaesarTest: View {
     @State private var shift: Int = 0
     
     var body: some View {
-        Caesar(shift: $shift)
+        CaesarWheel(shift: $shift)
     }
 }
 

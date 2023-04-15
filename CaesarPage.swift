@@ -91,7 +91,7 @@ struct CaesarPage: View {
                 
                 Spacer()
                 
-                Caesar(shift: $shift)
+                CaesarWheel(shift: $shift)
                 
                 Spacer()
             }
