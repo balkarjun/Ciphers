@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct SplitView<LeadingView: View, TrailingView: View>: View {
+    @EnvironmentObject var state: AppState
+    
     let page: AppPage
     let disabled: Bool
-    let action: () -> Void
     var leading: () -> LeadingView
     var trailing: () -> TrailingView
     
@@ -64,6 +65,14 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
         }
     }
     
+    private func action() {
+        if page == .four {
+            state.reset()
+        }
+        
+        state.nextPage()
+    }
+    
     var body: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 0) {
@@ -76,11 +85,20 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                         .font(.body.weight(.semibold))
                     
                     Spacer()
-                    Button {
-                        aboutSheetShown = true
+                    
+                    Menu {
+                        Button(action: state.reset) {
+                            Label("Restart", systemImage: "arrow.clockwise")
+                        }
+                        
+                        Button {
+                            aboutSheetShown = true
+                        } label: {
+                            Label("About Ciphers", systemImage: "info.circle")
+                        }
                     } label: {
-                        Image(systemName: "info.circle")
-                            .font(.body.weight(.medium))
+                        Image(systemName: "ellipsis.circle")
+                            .font(.body.weight(.semibold))
                     }
                 }
                 .padding()
@@ -131,21 +149,12 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
 struct SplitView_Previews: PreviewProvider {
     static var previews: some View {
         SplitView(page: .zero, disabled: false) {
-            
-        } leading: {
             Text("Left")
         } trailing: {
             VStack {
                 Text("Right")
             }
         }
-    }
-}
-
-struct TestView: View {
-    var body: some View {
-        VStack {
-            Text("Right")
-        }
+        .environmentObject(AppState())
     }
 }

@@ -13,7 +13,6 @@ enum ProgressStage {
 
 struct FinalPage: View {
     @Environment(\.colorScheme) private var colorScheme
-    @EnvironmentObject var state: AppState
     
     let encrypted = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
     
@@ -65,8 +64,6 @@ struct FinalPage: View {
     
     var body: some View {
         SplitView(page: .four, disabled: false) {
-            state.page = .zero
-        } leading: {
             VStack(alignment: .leading) {
                 Text("**Congratulations!**\nUsing Pigpen, Caesar and Grille Ciphers, you decoded the message and found the secret key. Hope you had fun learning about these ciphers along the way.\n\nYou can view the results of each stage using the buttons to the right, or play again from the beginnning.")
                     .padding()
@@ -177,7 +174,6 @@ struct StageButton: View {
 struct FinalPage_Previews: PreviewProvider {
     static var previews: some View {
         FinalPage()
-            .environmentObject(AppState())
             .previewInterfaceOrientation(.landscapeLeft)
     }
 }

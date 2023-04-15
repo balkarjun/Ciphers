@@ -8,15 +8,12 @@
 import SwiftUI
 
 struct GrillePage: View {
-    @EnvironmentObject var state: AppState
     @State private var answer: String = ""
 
     let target = "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased()
 
     var body: some View {
         SplitView(page: .three, disabled: answer.uppercased() != "MACINTOSH") {
-            state.nextPage()
-        } leading: {
             VStack(alignment: .leading) {
                 Text(target)
                     .font(.title3.monospaced())
@@ -93,6 +90,5 @@ struct GrillePage_Previews: PreviewProvider {
     static var previews: some View {
         GrillePage()
             .previewInterfaceOrientation(.landscapeLeft)
-            .environmentObject(AppState())
     }
 }

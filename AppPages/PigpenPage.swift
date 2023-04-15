@@ -9,8 +9,7 @@ import SwiftUI
 
 struct PigpenPage: View {
     @Environment(\.colorScheme) private var colorScheme
-    @EnvironmentObject var state: AppState
-
+    
     let target = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
     
     @State private var tapped: String = ""
@@ -19,8 +18,6 @@ struct PigpenPage: View {
     
     var body: some View {
         SplitView(page: .one, disabled: highlighted != "") {
-            state.nextPage()
-        } leading: {
             VStack(alignment: .leading) {
                 HStack(spacing: 0) {
                     PigpenCharacter(
@@ -261,6 +258,5 @@ struct PigpenPage_Previews: PreviewProvider {
     static var previews: some View {
         PigpenPage()
             .previewInterfaceOrientation(.landscapeLeft)
-            .environmentObject(AppState())
     }
 }

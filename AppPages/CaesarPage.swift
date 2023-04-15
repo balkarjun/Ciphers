@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct CaesarPage: View {
-    @EnvironmentObject var state: AppState
-    
     let encrypted = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
     
     let target = "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased()
@@ -22,8 +20,6 @@ struct CaesarPage: View {
     
     var body: some View {
         SplitView(page: .two, disabled: shifted != target) {
-            state.nextPage()
-        } leading: {
             VStack(alignment: .leading) {
                 Text(encrypted)
                     .font(.title3.monospaced())
@@ -95,8 +91,6 @@ struct CaesarPage: View {
 struct CaesarPage_Previews: PreviewProvider {
     static var previews: some View {
         CaesarPage()
-            .previewInterfaceOrientation(.landscapeLeft)
-            .environmentObject(AppState())
-        
+            .previewInterfaceOrientation(.landscapeLeft)        
     }
 }

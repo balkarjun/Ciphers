@@ -8,14 +8,10 @@
 import SwiftUI
 
 struct WelcomePage: View {
-    @EnvironmentObject var state: AppState
-    
     let target = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
     
     var body: some View {
         SplitView(page: .zero, disabled: false) {
-            state.nextPage()
-        } leading: {
             VStack(alignment: .leading) {
                 PigpenText(target)
                     .padding()
@@ -94,6 +90,5 @@ struct WelcomePage_Previews: PreviewProvider {
     static var previews: some View {
         WelcomePage()
             .previewInterfaceOrientation(.landscapeLeft)
-            .environmentObject(AppState())
     }
 }

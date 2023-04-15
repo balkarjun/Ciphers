@@ -37,6 +37,10 @@ class AppState: ObservableObject {
         
         page = AppPage(rawValue: page.rawValue - 1) ?? .zero
     }
+    
+    func reset() {
+        page = .zero
+    }
 }
 
 func cshift(message: String, by shift: Int) -> String {
