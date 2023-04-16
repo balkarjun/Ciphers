@@ -68,9 +68,9 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
     private func action() {
         if page == .four {
             state.reset()
+        } else {
+            state.nextPage()
         }
-        
-        state.nextPage()
     }
     
     var body: some View {
