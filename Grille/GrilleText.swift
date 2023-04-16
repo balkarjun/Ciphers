@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct GrilleText: View {
-    let text = "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased()
+    @EnvironmentObject var state: AppState
     
     @State private var screenWidth: Double = 0
     
     var body: some View {
-        ChunkedText(text: text, limit: screenWidth) { char in
+        ChunkedText(text: state.decrypted, limit: screenWidth) { char in
             Text(char)
                 .font(.title3.monospaced().weight(.semibold))
         }
@@ -29,13 +29,14 @@ struct GrilleText: View {
 }
 
 struct GrillePaper: View {
-    let initialOffset: CGSize = .init(width: 0, height: 180)
-    let text = "...... ......h ....s o. ....t.\n.....n .. ...i. ...... ... c...\n.a... .... ...m ....".uppercased()
-
+    @EnvironmentObject var state: AppState
+    
     let limit: Double
-
+    
     @State private var currentOffset = CGSize.zero
     @State private var finalOffset = CGSize.zero
+    
+    private let initialOffset: CGSize = .init(width: 0, height: 180)
     
     private var totalOffset: CGSize {
         CGSize(
@@ -50,22 +51,21 @@ struct GrillePaper: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            ChunkedText(text: text, limit: limit) { char in
+        VStack(alignment: .leading, spacing: 0) {
+            ChunkedText(text: state.blocked, limit: limit) { char in
                 Rectangle()
                     .fill(.clear)
-                    .frame(width: 22, height: 22)
+                    .frame(width: 24, height: 24)
                     .background(getColor(for: char))
                     .cornerRadius(2)
             }
             .padding()
-
+            
             Divider()
             
             Text("stencil")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.body.monospaced().bold())
                 .foregroundColor(.white.opacity(0.6))
+                .font(.body.monospaced().bold())
                 .padding()
         }
         .frame(maxWidth: .infinity)
@@ -94,5 +94,6 @@ struct GrilleText_Previews: PreviewProvider {
     static var previews: some View {
         GrilleText()
             .padding(200)
+            .environmentObject(AppState())
     }
 }

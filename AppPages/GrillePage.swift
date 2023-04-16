@@ -8,24 +8,26 @@
 import SwiftUI
 
 struct GrillePage: View {
+    @EnvironmentObject var state: AppState
+    
     @State private var answer: String = ""
-
-    let target = "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased()
-
+    
+    private var isNextPageDisabled: Bool {
+        answer.uppercased() != state.solution
+    }
+    
     var body: some View {
-        SplitView(page: .three, disabled: answer.uppercased() != "MACINTOSH") {
+        SplitView(page: .three, disabled: isNextPageDisabled) {
             VStack(alignment: .leading) {
-                Text(target)
+                Text(state.decrypted)
                     .font(.title3.monospaced())
                     .fontWeight(.medium)
-                    .padding()
-                    .padding()
+                    .padding(24)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.ultraThinMaterial)
+                    .background(.thinMaterial)
                     .cornerRadius(8)
                 
                 InteractionPrompt(
-                    symbol: "rectangle.and.hand.point.up.left.fill",
                     title: "Find the Secret Keyword",
                     description: "Align the stencil with the text to uncover the secret keyword. Once you find it, type it into the text field."
                 )
@@ -51,7 +53,7 @@ struct GrillePage: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(.quaternary, lineWidth: 1)
+                        .strokeBorder(.thinMaterial, lineWidth: 1)
                 }
             }
         } trailing: {
@@ -60,7 +62,7 @@ struct GrillePage: View {
                     .padding()
                 
                 Spacer()
-
+                
                 HStack {
                     Image(systemName: "hand.point.up.left.fill")
                         .font(.body.bold())
@@ -68,13 +70,13 @@ struct GrillePage: View {
                     Text("Touch and drag the stencil around")
                         .font(.callout.monospaced())
                 }
-                .padding()
                 .foregroundColor(.secondary)
+                .padding()
                 
                 TextField("Enter the key here...", text: $answer)
-                    .font(.body.monospaced())
-                    .disableAutocorrection(true)
                     .textInputAutocapitalization(.characters)
+                    .disableAutocorrection(true)
+                    .font(.body.monospaced())
                     .padding()
                     .overlay {
                         RoundedRectangle(cornerRadius: 8, style: .continuous)

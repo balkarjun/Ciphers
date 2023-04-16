@@ -18,6 +18,14 @@ enum AppPage: Int, CaseIterable {
 class AppState: ObservableObject {
     @Published var page: AppPage = .zero
     
+    let encrypted = cshift(message: "VIEWED THROUGH HOLES OF LIGHT,\nHIDDEN IN PLAIN SIGHT, THE CLUE\nFACES LEFT FROM RIGHT", by: 10)
+    
+    let decrypted = "VIEWED THROUGH HOLES OF LIGHT,\nHIDDEN IN PLAIN SIGHT, THE CLUE\nFACES LEFT FROM RIGHT"
+    
+    let blocked = "...... ......H ....S O. ....T.\n.....N .. ...I. ...... ... C...\n.A... .... ...M ....."
+    
+    let solution = "MACINTOSH"
+    
     var isFirstPage: Bool {
         page.rawValue <= 0
     }

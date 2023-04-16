@@ -12,45 +12,25 @@ enum ProgressStage {
 }
 
 struct FinalPage: View {
-    @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject var state: AppState
     
-    let encrypted = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
-    
-    let decrypted = "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased()
-    
-    let blocked = "...... ......h ....s o. ....t.\n.....n .. ...i. ...... ... c...\n.a... .... ...m ....".uppercased()
-
-    let solution = "MACINTOSH"
-    
-    private let charWidth: Double = 18
-    private let charHeight: Double = 18
-    // space between two consecutive characters
-    private let kerning: Double = 6
-    // space between rows of characters
-    private let lineSpacing: Double = 6
     @State private var screenWidth: Double = 0
-    
-    // number of characters that can fit in a line
-    private var lineLength: Int {
-        if screenWidth == 0 { return 1 }
-
-        return Int(screenWidth / (charWidth + kerning))
-    }
-    
     @State private var stage: ProgressStage = .four
+    
+    @Environment(\.colorScheme) private var colorScheme
     
     private var text: String {
         switch stage {
         case .zero:
-            return encrypted
+            return state.encrypted
         case .one:
-            return encrypted
+            return state.encrypted
         case .two:
-            return decrypted
+            return state.decrypted
         case .three:
-            return blocked
+            return state.blocked
         case .four:
-            return solution
+            return state.solution
         }
     }
     
@@ -74,10 +54,7 @@ struct FinalPage: View {
                 ) { char in
                     Group {
                         if isPigpen {
-                            PigpenCharacter(
-                                char,
-                                lineColor: primaryColor
-                            )
+                            PigpenCharacter(char, lineColor: primaryColor)
                         } else {
                             Text(char)
                                 .font(.title3.monospaced().weight(.semibold))
@@ -155,13 +132,13 @@ struct StageButton: View {
         } label: {
             HStack {
                 Image(systemName: symbol)
-                    .font(.title3.weight(.bold))
-                    .symbolRenderingMode(.hierarchical)
                     .foregroundColor(isActive ? .teal : .secondary)
+                    .symbolRenderingMode(.hierarchical)
+                    .font(.title3.weight(.bold))
 
                 Text(description)
-                    .font(.body.weight(.semibold))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.body.weight(.semibold))
                     .foregroundColor(.primary)
             }
             .padding()

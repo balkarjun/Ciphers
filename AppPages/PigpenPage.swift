@@ -8,67 +8,64 @@
 import SwiftUI
 
 struct PigpenPage: View {
-    @Environment(\.colorScheme) private var colorScheme
+    @EnvironmentObject var state: AppState
     
-    let target = cshift(message: "Viewed through holes of light,\nhidden in plain sight, the clue\nfaces left from right".uppercased(), by: 10)
-    
-    @State private var tapped: String = ""
-    @State var highlighted: String = cshift(message: "V", by: 10)
+    @State private var tapped = ""
+    @State private var highlighted = "F"
     @State private var completedCharacters: Set<String> = [" ", ",", "\n"]
     
+    @Environment(\.colorScheme) private var colorScheme
+    
+    private var isNextPageDisabled: Bool {
+        highlighted != ""
+    }
+    
+    private var pigpenColor: Color {
+        colorScheme == .dark ? .white : .black
+    }
+    
     var body: some View {
-        SplitView(page: .one, disabled: highlighted != "") {
+        SplitView(page: .one, disabled: isNextPageDisabled) {
             VStack(alignment: .leading) {
                 HStack(spacing: 0) {
                     PigpenText(
-                        target,
+                        state.encrypted,
                         highlighted: highlighted,
                         completed: completedCharacters
                     )
-                    .padding()
+                    .padding(24)
                     
                     Rectangle()
                         .fill(.thinMaterial)
                         .frame(width: 2)
                     
-                    PigpenCharacter(
-                        highlighted,
-                        lineColor: colorScheme == .dark ? .white : .black
-                    )
-                    .scaleEffect(2.5)
-                    .padding()
-                    .padding()
-                    .padding(.horizontal)
-                    .opacity(highlighted == "" ? 0 : 1)
-                    
+                    PigpenCharacter(highlighted, lineColor: pigpenColor)
+                        .opacity(highlighted == "" ? 0 : 1)
+                        .scaleEffect(2.5)
+                        .padding(48)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.ultraThinMaterial)
-                .cornerRadius(8)
                 .fixedSize(horizontal: false, vertical: true)
+                .background(.thinMaterial)
+                .cornerRadius(8)
                 
                 InteractionPrompt(
-                    symbol: "rectangle.and.hand.point.up.left.fill",
-                    title: "Match the Symbols",
-                    description: "Using the keyboard in the interactive area, tap on the matching letter for the symbols highlighted above, to make sense of this cryptic message."
+                    title: "Match the Symbols and Letters",
+                    description: "Using the keyboard in the interactive area, tap on the matching letter for the symbol highlighted above, to make sense of this cryptic message."
                 )
                 
-                Text("These funny looking symbols come from the ***Pigpen Cipher***, where each letter in the message is replaced by a symbol. Here's an example:")
+                Text("This is the **Pigpen Cipher** in which each letter in the message is replaced by a symbol. Here's an example:")
                     .padding()
                 
                 HStack(spacing: 0) {
                     ForEach(Array("FINALCUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
                         VStack(spacing: 4) {
-                            PigpenCharacter(
-                                char,
-                                lineColor: colorScheme == .dark ? .white : .black
-                            )
-
+                            PigpenCharacter(char, lineColor: pigpenColor)
+                            
                             Text(char)
-                                .frame(width: 18)
-                                .padding(.horizontal, 3)
-                                .font(.title3.bold().monospaced())
+                                .font(.title3.monospaced().bold())
                                 .foregroundColor(.teal)
+                                .frame(width: 24)
                         }
                     }
                 }
@@ -79,34 +76,24 @@ struct PigpenPage: View {
                     .padding(.horizontal)
                 
                 HStack {
-                    HStack {
-                        Text("P")
-                            .font(.body.bold())
-                        
-                        PigpenCharacter(
-                            "P",
-                            lineColor: colorScheme == .dark ? .white : .black
-                        )
-                    }
-                    .padding(.horizontal)
+                    Text("P")
+                        .font(.body.bold())
+                    
+                    PigpenCharacter("P", lineColor: pigpenColor)
                     
                     Text("For example, the letter ***P*** is surrounded by lines to the top and to the right, and also contains a circular dot.")
+                        .padding(.leading)
                 }
                 .padding(.horizontal)
                 
                 HStack {
-                    HStack {
-                        Text("S")
-                            .font(.body.bold())
-                        
-                        PigpenCharacter(
-                            "S",
-                            lineColor: colorScheme == .dark ? .white : .black
-                        )
-                    }
-                    .padding(.horizontal)
+                    Text("S")
+                        .font(.body.bold())
+                    
+                    PigpenCharacter("S", lineColor: pigpenColor)
                     
                     Text("The letter ***S*** has angled lines to it's bottom left and bottom right.")
+                        .padding(.leading)
                 }
                 .padding(.horizontal)
                 
@@ -127,25 +114,23 @@ struct PigpenPage: View {
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .strokeBorder(.thinMaterial, lineWidth: 1)
                 }
-
-                Spacer()
             }
         } trailing: {
             VStack(spacing: 0) {
                 AnswerField(
-                    target: target,
+                    target: state.encrypted,
                     completed: completedCharacters
                 )
-                .padding()
-                .padding()
+                .padding(24)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .strokeBorder(.thinMaterial, lineWidth: 2)
                 }
+                
                 Spacer()
                 
                 PigpenKeyboard(tapped: $tapped)
@@ -159,8 +144,8 @@ struct PigpenPage: View {
                     Text("Tap on the matching letter")
                         .font(.callout.monospaced())
                 }
-                .padding()
                 .foregroundColor(.secondary)
+                .padding()
             }
         }
         .onChange(of: tapped) { _ in
@@ -175,7 +160,7 @@ struct PigpenPage: View {
             
             // skip until next unseen character is reached. highlight that
             var found = false
-            for character in target.map({ String($0) }) {
+            for character in state.encrypted.map({ String($0) }) {
                 if !completedCharacters.contains(character) {
                     highlighted = character
                     found = true
@@ -230,12 +215,10 @@ struct AnswerField: View {
     var body: some View {
         ZStack {
             Text(displayedText)
-                .font(.title3.monospaced())
-                .fontWeight(.medium)
+                .font(.title3.monospaced().weight(.medium))
             
             Text(placeholder)
-                .font(.title3.monospaced())
-                .fontWeight(.medium)
+                .font(.title3.monospaced().weight(.medium))
                 .foregroundColor(.secondary)
         }
     }

@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct InteractionPrompt: View {
-    let symbol: String
     let title: String
-    
     let description: String
     
     var body: some View {
@@ -26,7 +24,7 @@ struct InteractionPrompt: View {
             }
 
             HStack {
-                Image(systemName: symbol)
+                Image(systemName: "rectangle.and.hand.point.up.left.fill")
                     .symbolRenderingMode(.hierarchical)
                     .foregroundColor(.teal)
                     .font(.body.bold())
@@ -39,14 +37,14 @@ struct InteractionPrompt: View {
                 .frame(height: 1)
                 .padding(.top, 8)
         }
-        .padding(.top, 8)
         .padding(.horizontal)
+        .padding(.top, 8)
     }
 }
 
 struct InteractionPrompt_Previews: PreviewProvider {
     static var previews: some View {
-        InteractionPrompt(symbol: "rectangle.and.hand.point.up.left.fill", title: "Decipher the Message", description: "Use the wheel in the interactive area to shift each letter in the message, until it makes sense.")
+        InteractionPrompt(title: "Decipher the Message", description: "Use the wheel in the interactive area to shift each letter in the message, until it makes sense.")
             .padding(100)
     }
 }
