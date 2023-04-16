@@ -15,96 +15,126 @@ struct CaesarWheel: View {
     @State private var finalAngle: Angle = .degrees(-0.1)
     
     @Binding var shift: Int
+    
+    func updateShift() {
+        let totalDegrees = (currentAngle + finalAngle).degrees
+        let calc = floor(totalDegrees / (360.0 / Double(characters.count)))
+        let result = Int(calc + 1) * -1
+        
+        self.shift = (26 + (result % 26)) % 26
+    }
 
     var body: some View {
-        Circle()
-            .fill(colorScheme == .dark ? Color(.systemGray6) : Color(.systemGray4))
-            .frame(width: 360, height: 360)
-            .overlay {
-                ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
-                    let angle = Double(index) * (360.0 / Double(characters.count))
-                    let numericalOffset: Double = Double(index) - 0.5
-                    let lineAngle = numericalOffset * (360.0 / Double(characters.count))
-                    
-                    Text(char)
-                        .font(.body.monospaced().weight(.semibold))
-                        .rotationEffect(.degrees(90))
-                        .offset(x: 150 + 8)
-                        .rotationEffect(.degrees(-90))
-                        .rotationEffect(.degrees(angle))
-                    
-                    
-                    Rectangle()
-                        .frame(width: 1)
-                        .rotationEffect(.degrees(lineAngle))
-                        .opacity(0.05)
+        ZStack {
+            Circle()
+                .fill(colorScheme == .dark ? Color(.systemGray6) : Color(.systemGray4))
+                .frame(width: 360, height: 360)
+                .overlay {
+                    ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
+                        let angle = Double(index) * (360.0 / Double(characters.count))
+                        let numericalOffset: Double = Double(index) - 0.5
+                        let lineAngle = numericalOffset * (360.0 / Double(characters.count))
+                        
+                        Text(char)
+                            .font(.body.monospaced().weight(.semibold))
+                            .rotationEffect(.degrees(90))
+                            .offset(x: 150 + 8)
+                            .rotationEffect(.degrees(-90))
+                            .rotationEffect(.degrees(angle))
+                        
+                        
+                        Rectangle()
+                            .frame(width: 1)
+                            .rotationEffect(.degrees(lineAngle))
+                            .opacity(0.05)
+                    }
                 }
-            }
-            .overlay {
-                Circle()
-                    .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
-                    .frame(width: 280, height: 280)
-                    .overlay {
-                        ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
-                            let angle: Double = Double(index) * (360.0 / Double(characters.count))
-                            let numericalOffset: Double = Double(index) - 0.5
-                            let lineAngle: Double = numericalOffset * (360.0 / Double(characters.count))
-
-                            Text(char)
-                                .font(.body.monospaced().weight(.semibold))
-                                .rotationEffect(.degrees(90))
-                                .offset(x: 150 - 24)
-                                .rotationEffect(.degrees(-90))
-                                .rotationEffect(.degrees(angle))
-                            
-                            Rectangle()
-                                .frame(width: 1)
-                                .rotationEffect(.degrees(lineAngle))
-                                .opacity(0.1)
+                .overlay {
+                    Circle()
+                        .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
+                        .frame(width: 280, height: 280)
+                        .overlay {
+                            ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
+                                let angle: Double = Double(index) * (360.0 / Double(characters.count))
+                                let numericalOffset: Double = Double(index) - 0.5
+                                let lineAngle: Double = numericalOffset * (360.0 / Double(characters.count))
+                                
+                                Text(char)
+                                    .font(.body.monospaced().weight(.semibold))
+                                    .rotationEffect(.degrees(90))
+                                    .offset(x: 150 - 24)
+                                    .rotationEffect(.degrees(-90))
+                                    .rotationEffect(.degrees(angle))
+                                
+                                Rectangle()
+                                    .frame(width: 1)
+                                    .rotationEffect(.degrees(lineAngle))
+                                    .opacity(0.1)
+                            }
                         }
-                    }
-                    .rotationEffect(currentAngle + finalAngle)
-                    .gesture (
-                        RotationGesture()
-                            .onChanged { angle in
-                                currentAngle = angle
-                                
-                                let totalDegrees = (currentAngle + finalAngle).degrees
-                                let calc = floor(totalDegrees / (360.0 / Double(characters.count)))
-                                let result = Int(calc + 1) * -1
-                                
-                                // mod(%) of result
-                                if result < 0 {
-                                    self.shift = 26 + result
-                                } else {
-                                    self.shift = result
+                        .rotationEffect(currentAngle + finalAngle)
+                        .gesture (
+                            RotationGesture()
+                                .onChanged { angle in
+                                    currentAngle = angle
+                                    
+                                    updateShift()
                                 }
-                            }
-                            .onEnded { angle in
-                                finalAngle += angle
-                                currentAngle = .degrees(0)
-                            }
-                    )
-            }
-            .overlay {
-                Circle()
-                    .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
-                    .frame(width: 150, height: 150)
-                    .overlay {
-                        Circle()
-                            .strokeBorder(.quaternary, lineWidth: 1)
-                    }
-                    .onTapGesture {
-                        shift = 0
-                        withAnimation {
-                            currentAngle = .degrees(0)
-                            finalAngle = .degrees(-0.1)
+                                .onEnded { angle in
+                                    finalAngle += angle
+                                    currentAngle = .degrees(0)
+                                }
+                        )
+                }
+                .overlay {
+                    Circle()
+                        .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
+                        .frame(width: 150, height: 150)
+                        .overlay {
+                            Circle()
+                                .strokeBorder(.quaternary, lineWidth: 1)
                         }
-                    }
-                
-                Text(shift, format: .number)
-                    .font(.title3.monospaced().bold())
+                        .onTapGesture {
+                            shift = 0
+                            withAnimation {
+                                currentAngle = .degrees(0)
+                                finalAngle = .degrees(-0.1)
+                            }
+                        }
+                    
+                    Text(shift, format: .number)
+                        .font(.title3.monospaced().bold())
+                        .animation(.none, value: shift)
+                }
+            
+            Button {
+                withAnimation {
+                    finalAngle -= .degrees(360.0 / Double(characters.count))
+                    
+                    updateShift()
+                }
+            } label: {
+                Image(systemName: "arrow.down.circle.fill")
+                    .font(.title.weight(.semibold))
+                    .symbolRenderingMode(.hierarchical)
             }
+            .offset(x: -(180 + 24))
+            .rotationEffect(.degrees(-45))
+            
+            Button {
+                withAnimation {
+                    finalAngle += .degrees(360.0 / Double(characters.count))
+                    
+                    updateShift()
+                }
+            } label: {
+                Image(systemName: "arrow.down.circle.fill")
+                    .font(.title.weight(.semibold))
+                    .symbolRenderingMode(.hierarchical)
+            }
+            .offset(x: 180 + 24)
+            .rotationEffect(.degrees(45))
+        }
     }
 }
 

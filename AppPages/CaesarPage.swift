@@ -68,6 +68,7 @@ struct CaesarPage: View {
                         RoundedRectangle(cornerRadius: 8, style: .continuous)
                             .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
                     }
+                    .animation(.none, value: shifted)
                 
                 Spacer()
                 
@@ -78,7 +79,7 @@ struct CaesarPage: View {
                     Image(systemName: "arrow.triangle.2.circlepath")
                         .font(.body.bold())
                     
-                    Text("Use two fingers to rotate the inner wheel")
+                    Text("Use two fingers to rotate the inner wheel, or use the arrows.")
                         .font(.callout.monospaced())
                 }
                 .padding()
