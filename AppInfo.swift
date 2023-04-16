@@ -11,21 +11,33 @@ struct AppInfo: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Ciphers")
-                .font(.title2.bold())
-            Text("Thank you for checking out this silly little app that I put a lot of effort into.\nCiphers was built in 2 weeks as my submission to the WWDC23 Swift Student Challenge.")
-                .multilineTextAlignment(.leading)
-                .font(.body)
+                .font(.title.bold())
             
-            VStack(alignment: .leading) {
-                Text("Arjun Balakrishnan")
-                    .font(.body.bold())
-                Text("Designer & Developer")
-                    .foregroundColor(.secondary)
-            }
-            .padding(.top)
-            
+            Text("Decode the cryptic message to find the secret keyword, \nand learn about some ciphers along the way.")
+
             Divider()
                 .padding(.vertical)
+            
+            Text("Thank you for checking out this little app that I put a lot of effort into.\nCiphers was built over the course of 2 weeks as my submission to the WWDC23 Swift Student Challenge.")
+                .font(.body)
+            
+            HStack {
+                Link(destination: URL(string: "https://github.com/balkarjun")!) {
+                    Image(systemName: "link")
+                        .font(.body.bold())
+                        .padding(12)
+                        .background(.mint.opacity(0.1))
+                        .cornerRadius(8)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Arjun Balakrishnan")
+                        .font(.body.bold())
+                    Text("Designer & Developer")
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(.top)
             
             Spacer()
         }
