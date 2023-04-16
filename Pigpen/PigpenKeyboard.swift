@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PigpenSquareKeyboard: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     @Binding var tapped: String
     
     let characters: [String]
@@ -18,6 +20,10 @@ struct PigpenSquareKeyboard: View {
     var dotSize: Double = 7
     
     private let primaryColor: Color = .primary
+    
+    private var backgroundColor: Color {
+        Color.accentColor.opacity(colorScheme == .dark ? 0.25 : 0.1)
+    }
     
     var body: some View {
         Rectangle()
@@ -46,26 +52,26 @@ struct PigpenSquareKeyboard: View {
                                 .opacity(dotted ? 1 : 0)
                                 .offset(x: width/12)
                         }
-                        .background(Color.accentColor.opacity(0.1))
+                        .background(backgroundColor)
                     }
                     .offset(x: xOffset, y: yOffset)
                 }
             }
             .overlay {
                 Rectangle()
-                    .fill(Color.accentColor.opacity(0.7))
+                    .fill(.primary)
                     .frame(width: 3)
                     .offset(x: -width/6)
                 Rectangle()
-                    .fill(Color.accentColor.opacity(0.7))
+                    .fill(.primary)
                     .frame(width: 3)
                     .offset(x: width/6)
                 Rectangle()
-                    .fill(Color.accentColor.opacity(0.7))
+                    .fill(.primary)
                     .frame(height: 3)
                     .offset(y: -height/6)
                 Rectangle()
-                    .fill(Color.accentColor.opacity(0.7))
+                    .fill(.primary)
                     .frame(height: 3)
                     .offset(y: height/6)
             }
@@ -74,39 +80,44 @@ struct PigpenSquareKeyboard: View {
 }
 
 struct PigpenTriangleKeyboard: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     @Binding var tapped: String
+    
     let characters: [String]
     var dotted: Bool = false
     
-    var width: Double = 200
-    var height: Double = 200
-    var dotSize: Double = 8
-    
-    func getOffset(for index: Int) -> CGSize {
-        if index == 0 { return CGSize(width: 0, height: -height/3.5)}
-        if index == 1 { return CGSize(width: -width/3.5, height: 0)}
-        if index == 2 { return CGSize(width: width/3.5, height: 0)}
-        return CGSize(width: 0, height: height/3.5)
-    }
-    
-    func getDotOffset(for index: Int) -> CGSize {
-        if index == 0 { return CGSize(width: 0, height: 32)}
-        if index == 1 { return CGSize(width: 32, height: 0)}
-        if index == 2 { return CGSize(width: -32, height: 0)}
-        return CGSize(width: 0, height: -32)
-    }
+    var width: Double = 150
+    var height: Double = 150
+    var dotSize: Double = 7
     
     private let primaryColor: Color = .primary
-
+    
+    private var backgroundColor: Color {
+        Color.accentColor.opacity(colorScheme == .dark ? 0.25 : 0.1)
+    }
+    
+    private func dotOffset(row: Int, col: Int) -> Double {
+        if row == 0 && col == 0 { return   45 }
+        if row == 0 && col == 1 { return  -45 }
+        if row == 1 && col == 0 { return  135 }
+        if row == 1 && col == 1 { return -135 }
+        
+        return 0
+    }
+    
     var body: some View {
         Rectangle()
             .fill(.clear)
             .frame(width: width, height: height)
             .overlay {
                 ForEach(Array(characters.enumerated()), id: \.offset) { index, character in
-                    let offset = getOffset(for: index)
-                    let dotOffset = getDotOffset(for: index)
+                    let rowNumber: Int = index % 2
+                    let xOffset: Double = Double(rowNumber - 1)*(width/2) + width/4
                     
+                    let colNumber: Int = index / 2
+                    let yOffset: Double = Double(colNumber - 1)*(height/2) + height/4
+
                     Button {
                         tapped = character
                     } label: {
@@ -114,42 +125,40 @@ struct PigpenTriangleKeyboard: View {
                             Text(character)
                                 .font(.title2.monospaced().bold())
                                 .foregroundColor(.primary)
+                                .frame(width: width/2, height: height/2)
                                 .rotationEffect(.degrees(-45))
-                                .frame(width: width*1.1/3, height: height*1.1/3)
                             
                             Circle()
                                 .fill(primaryColor.opacity(0.8))
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(dotted ? 1 : 0)
-                                .offset(dotOffset)
-                                .rotationEffect(.degrees(-45))
+                                .offset(x: width/6)
+                                .rotationEffect(.degrees(dotOffset(row: rowNumber, col: colNumber)))
                         }
-                        .background(Color.accentColor.opacity(0.1))
-                        .rotationEffect(.degrees(45))
+                        .background(backgroundColor)
                     }
-                    .offset(offset)
+                    .offset(x: xOffset, y: yOffset)
                 }
             }
             .overlay {
                 Rectangle()
-                    .fill(Color.accentColor.opacity(0.7))
-                    .frame(width: 3, height: height/1.25)
-                    .rotationEffect(.degrees(-45))
+                    .fill(.primary)
+                    .frame(width: 3)
                 Rectangle()
-                    .fill(Color.accentColor.opacity(0.7))
-                    .frame(width: 3, height: height/1.25)
-                    .rotationEffect(.degrees(45))
+                    .fill(.primary)
+                    .frame(height: 3)
             }
-            .cornerRadius(8)
+            .cornerRadius(12)
+            .rotationEffect(.degrees(45))
     }
 }
 
 struct PigpenKeyboard: View {
-    @State private var tapped: String = ""
+    @Binding var tapped: String
     
     var body: some View {
-        VStack {
-            HStack {
+        VStack(spacing: 36) {
+            HStack(spacing: 12) {
                 PigpenSquareKeyboard(
                     tapped: $tapped,
                     characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
@@ -162,15 +171,15 @@ struct PigpenKeyboard: View {
                 )
             }
             
-            HStack {
+            HStack(spacing: 64) {
                 PigpenTriangleKeyboard(
                     tapped: $tapped,
-                    characters: ["S", "T", "U", "V"]
+                    characters: ["S", "U", "T", "V"]
                 )
                 
                 PigpenTriangleKeyboard(
                     tapped: $tapped,
-                    characters: ["W", "X", "Y", "Z"],
+                    characters: ["W", "Y", "X", "Z"],
                     dotted: true
                 )
             }
@@ -180,7 +189,7 @@ struct PigpenKeyboard: View {
 
 struct PigpenKeyboard_Previews: PreviewProvider {
     static var previews: some View {
-        PigpenKeyboard()
+        PigpenKeyboard(tapped: .constant(""))
             .previewInterfaceOrientation(.landscapeLeft)
     }
 }

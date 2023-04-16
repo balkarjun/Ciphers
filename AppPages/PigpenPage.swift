@@ -20,6 +20,17 @@ struct PigpenPage: View {
         SplitView(page: .one, disabled: highlighted != "") {
             VStack(alignment: .leading) {
                 HStack(spacing: 0) {
+                    PigpenText(
+                        target,
+                        highlighted: highlighted,
+                        completed: completedCharacters
+                    )
+                    .padding()
+                    
+                    Rectangle()
+                        .fill(.thinMaterial)
+                        .frame(width: 2)
+                    
                     PigpenCharacter(
                         highlighted,
                         lineColor: colorScheme == .dark ? .white : .black
@@ -30,16 +41,6 @@ struct PigpenPage: View {
                     .padding(.horizontal)
                     .opacity(highlighted == "" ? 0 : 1)
                     
-                    Rectangle()
-                        .fill(.quaternary.opacity(0.5))
-                        .frame(width: 2)
-                    
-                    PigpenText(
-                        target,
-                        highlighted: highlighted,
-                        completed: completedCharacters
-                    )
-                    .padding()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.ultraThinMaterial)
@@ -57,13 +58,17 @@ struct PigpenPage: View {
                 
                 HStack(spacing: 0) {
                     ForEach(Array("FINALCUT".map{ String($0) }.enumerated()), id: \.offset) { _, char in
-                        VStack(spacing: 0) {
+                        VStack(spacing: 4) {
+                            PigpenCharacter(
+                                char,
+                                lineColor: colorScheme == .dark ? .white : .black
+                            )
+
                             Text(char)
                                 .frame(width: 18)
                                 .padding(.horizontal, 3)
-                                .font(.body.bold())
-                            
-                            PigpenCharacter(char, lineColor: .teal)
+                                .font(.title3.bold().monospaced())
+                                .foregroundColor(.teal)
                         }
                     }
                 }
@@ -78,7 +83,10 @@ struct PigpenPage: View {
                         Text("P")
                             .font(.body.bold())
                         
-                        PigpenCharacter("P")
+                        PigpenCharacter(
+                            "P",
+                            lineColor: colorScheme == .dark ? .white : .black
+                        )
                     }
                     .padding(.horizontal)
                     
@@ -91,7 +99,10 @@ struct PigpenPage: View {
                         Text("S")
                             .font(.body.bold())
                         
-                        PigpenCharacter("S")
+                        PigpenCharacter(
+                            "S",
+                            lineColor: colorScheme == .dark ? .white : .black
+                        )
                     }
                     .padding(.horizontal)
                     
@@ -117,7 +128,7 @@ struct PigpenPage: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(.quaternary, lineWidth: 1)
+                        .strokeBorder(.thinMaterial, lineWidth: 1)
                 }
 
                 Spacer()
@@ -133,36 +144,12 @@ struct PigpenPage: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .strokeBorder(.quaternary.opacity(0.5), lineWidth: 2)
+                        .strokeBorder(.thinMaterial, lineWidth: 2)
                 }
                 Spacer()
-                VStack(spacing: 24) {
-                    HStack(spacing: 24) {
-                        PigpenSquareKeyboard(
-                            tapped: $tapped,
-                            characters: ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
-                        )
-                        
-                        PigpenSquareKeyboard(
-                            tapped: $tapped,
-                            characters: ["J", "K", "L", "M", "N", "O", "P", "Q", "R"],
-                            dotted: true
-                        )
-                    }
-                    
-                    HStack(spacing: 24) {
-                        PigpenTriangleKeyboard(
-                            tapped: $tapped,
-                            characters: ["S", "T", "U", "V"]
-                        )
-                        
-                        PigpenTriangleKeyboard(
-                            tapped: $tapped,
-                            characters: ["W", "X", "Y", "Z"],
-                            dotted: true
-                        )
-                    }
-                }
+                
+                PigpenKeyboard(tapped: $tapped)
+                
                 Spacer()
                 
                 HStack {
