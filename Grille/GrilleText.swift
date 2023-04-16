@@ -50,15 +50,25 @@ struct GrillePaper: View {
     }
     
     var body: some View {
-        ChunkedText(text: text, limit: limit) { char in
-            Rectangle()
-                .fill(.clear)
-                .background(getColor(for: char))
-                .cornerRadius(2)
-                .scaleEffect(x: 1.125, y: 1.15)
+        VStack(spacing: 0) {
+            ChunkedText(text: text, limit: limit) { char in
+                Rectangle()
+                    .fill(.clear)
+                    .frame(width: 22, height: 22)
+                    .background(getColor(for: char))
+                    .cornerRadius(2)
+            }
+            .padding()
+
+            Divider()
+            
+            Text("stencil")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.body.monospaced().bold())
+                .foregroundColor(.white.opacity(0.6))
+                .padding()
         }
         .frame(maxWidth: .infinity)
-        .padding()
         .background(.white.opacity(0.1))
         .cornerRadius(8)
         .offset(totalOffset)
@@ -83,5 +93,6 @@ struct GrillePaper: View {
 struct GrilleText_Previews: PreviewProvider {
     static var previews: some View {
         GrilleText()
+            .padding(200)
     }
 }
