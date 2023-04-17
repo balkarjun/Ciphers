@@ -15,12 +15,12 @@ struct InteractionPrompt: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(.teal)
+                .foregroundColor(.accentColor)
             
             HStack {
                 Image(systemName: "rectangle.and.hand.point.up.left.fill")
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundColor(.teal)
+                    .foregroundColor(.accentColor)
                     .font(.body.bold())
 
                 Text(description)

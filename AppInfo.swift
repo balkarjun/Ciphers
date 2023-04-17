@@ -26,7 +26,7 @@ struct AppInfo: View {
                     Image(systemName: "link")
                         .font(.body.bold())
                         .padding(12)
-                        .background(.mint.opacity(0.1))
+                        .background(Color.accentColor.opacity(0.1))
                         .cornerRadius(8)
                 }
                 

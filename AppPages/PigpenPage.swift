@@ -64,7 +64,7 @@ struct PigpenPage: View {
                             
                             Text(char)
                                 .font(.title3.monospaced().bold())
-                                .foregroundColor(.teal)
+                                .foregroundColor(Color.accentColor)
                                 .frame(width: 24)
                         }
                     }

@@ -24,8 +24,7 @@ struct CaesarPage: View {
         SplitView(page: .two, disabled: !solved) {
             VStack(alignment: .leading) {
                 Text(state.encrypted)
-                    .font(.title3.monospaced())
-                    .fontWeight(.medium)
+                    .font(.title3.monospaced().weight(.medium))
                     .padding(24)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(.thinMaterial)
@@ -46,7 +45,7 @@ struct CaesarPage: View {
                         
                         Text(cshift(message: "APPLE", by: 1))
                             .font(.title3.monospaced().weight(.semibold))
-                            .foregroundColor(.teal)
+                            .foregroundColor(Color.accentColor)
                     }
                     .padding(.leading)
                     

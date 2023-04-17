@@ -26,7 +26,7 @@ struct GrillePage: View {
                     description: "Align the stencil with the text to uncover the secret keyword. Once you find it, type it into the text field."
                 )
                 
-                Text("The message is now readable, but how do we find the secret key? The secret keyword might lie within this message, hidden in plain sight.\n\nThis is called Steganography, and the message above uses in particular a ***Grille Cipher***, where the secret becomes visible when the message is viewed through a stencil or a piece paper with holes in it.\n\nWe simply need to view the message using the given stencil, and decode it to find the secret keyword.")
+                Text("The message is now readable, but how do we find the secret keyword? It is hidden in the message itself.\n\nThis is called Steganography, and the message above uses a ***Grille Cipher***, where the secret becomes visible when the message is viewed through a stencil or a piece of paper with holes in it.\n\nWe simply need to view the message using the stencil, and decode the message by reading out the revealed letters.")
                     .padding()
                 
                 VStack(alignment: .leading, spacing: 6) {
@@ -41,7 +41,7 @@ struct GrillePage: View {
                             .foregroundColor(.primary)
                     }
                     
-                    Text("Make sure you read what the message says. It holds the clue to finding the secret keyword.")
+                    Text("Make sure you read what the message says.")
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -51,7 +51,7 @@ struct GrillePage: View {
                 }
             }
         } trailing: {
-            VStack {
+            VStack(spacing: 0) {
                 GrilleText()
                     .padding()
                 
@@ -62,6 +62,16 @@ struct GrillePage: View {
                         .font(.body.bold())
                     
                     Text("Touch and drag the stencil around")
+                        .font(.callout.monospaced())
+                }
+                .foregroundColor(.secondary)
+                
+                HStack {
+                    Image(systemName: "hand.point.up.left")
+                        .font(.body.bold())
+                        .rotationEffect(.degrees(-180))
+                    
+                    Text("Type the secret keyword here")
                         .font(.callout.monospaced())
                 }
                 .foregroundColor(.secondary)

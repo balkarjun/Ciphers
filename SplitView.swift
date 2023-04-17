@@ -137,7 +137,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                     }
                     .disabled(disabled)
                     .buttonStyle(.borderedProminent)
-                    .tint(.teal)
+                    .tint(Color.accentColor)
                 } else {
                     HStack {
                         TextField("Enter the key here...", text: $answer)
@@ -161,7 +161,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                         }
                         .disabled(answer.uppercased() != state.solution)
                         .buttonStyle(.borderedProminent)
-                        .tint(.teal)
+                        .tint(Color.accentColor)
                     }
                 }
             }

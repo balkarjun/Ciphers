@@ -18,14 +18,24 @@ struct WelcomePage: View {
                     .background(.thinMaterial)
                     .cornerRadius(8)
                 
-                Text("A cipher is a way to disguise a message and conceal it's meaning. Hidden within the cryptic message above is a secret keyword that we're interested in.\n\nThrough a series of interactive tutorials, we will learn about the various ciphers that were used to encode this message, and decode it one step at a time until we find the hidden keyword.\n\nPress the **start** button to begin!")
+                Text("A cipher is a way to disguise a message and conceal it's meaning. Hidden within the cryptic message above is a secret keyword that we're interested in.\n\nThrough a series of interactive tutorials, we will learn about the various ciphers that were used to encode this message and decode it one step at a time to find the hidden keyword.")
                     .padding()
+                
+                HStack {
+                    Text("Press the **start** button to begin")
+
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(.body.bold())
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(Color.accentColor)
+                }
+                .padding(.horizontal)
             }
         } trailing: {
             VStack {
                 Image(systemName: "rectangle.and.hand.point.up.left.fill")
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundColor(.teal)
+                    .foregroundColor(Color.accentColor)
                     .font(.system(size: 60))
                     .padding(.bottom)
                 

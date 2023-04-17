@@ -17,7 +17,7 @@ struct PigpenSquareKeyboard: View {
     
     var width: Double = 200
     var height: Double = 200
-    var dotSize: Double = 7
+    var dotSize: Double = 8
     
     private let primaryColor: Color = .primary
     
@@ -47,7 +47,7 @@ struct PigpenSquareKeyboard: View {
                                 .frame(width: width/3, height: height/3)
                             
                             Circle()
-                                .fill(primaryColor.opacity(0.8))
+                                .fill(Color.accentColor)
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(dotted ? 1 : 0)
                                 .offset(x: width/12)
@@ -59,19 +59,19 @@ struct PigpenSquareKeyboard: View {
             }
             .overlay {
                 Rectangle()
-                    .fill(.primary)
+                    .fill(Color.accentColor)
                     .frame(width: 3)
                     .offset(x: -width/6)
                 Rectangle()
-                    .fill(.primary)
+                    .fill(Color.accentColor)
                     .frame(width: 3)
                     .offset(x: width/6)
                 Rectangle()
-                    .fill(.primary)
+                    .fill(Color.accentColor)
                     .frame(height: 3)
                     .offset(y: -height/6)
                 Rectangle()
-                    .fill(.primary)
+                    .fill(Color.accentColor)
                     .frame(height: 3)
                     .offset(y: height/6)
             }
@@ -89,7 +89,7 @@ struct PigpenTriangleKeyboard: View {
     
     var width: Double = 150
     var height: Double = 150
-    var dotSize: Double = 7
+    var dotSize: Double = 8
     
     private let primaryColor: Color = .primary
     
@@ -129,7 +129,7 @@ struct PigpenTriangleKeyboard: View {
                                 .rotationEffect(.degrees(-45))
                             
                             Circle()
-                                .fill(primaryColor.opacity(0.8))
+                                .fill(Color.accentColor)
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(dotted ? 1 : 0)
                                 .offset(x: width/6)
@@ -142,10 +142,10 @@ struct PigpenTriangleKeyboard: View {
             }
             .overlay {
                 Rectangle()
-                    .fill(.primary)
+                    .fill(Color.accentColor)
                     .frame(width: 3)
                 Rectangle()
-                    .fill(.primary)
+                    .fill(Color.accentColor)
                     .frame(height: 3)
             }
             .cornerRadius(12)

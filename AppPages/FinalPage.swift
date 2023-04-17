@@ -96,18 +96,13 @@ struct StageButton: View {
         stage == activeStage
     }
     
-    private var symbol: String {
+    private var stageNumber: Int {
         switch stage {
-        case .zero:
-            return "0.circle.fill"
-        case .one:
-            return "1.circle.fill"
-        case .two:
-            return "2.circle.fill"
-        case .three:
-            return "3.circle.fill"
-        case .four:
-            return "4.circle.fill"
+        case .zero: return 1
+        case .one: return 2
+        case .two: return 3
+        case .three: return 4
+        case .four:return 5
         }
     }
     
@@ -131,18 +126,19 @@ struct StageButton: View {
             activeStage = stage
         } label: {
             HStack {
-                Image(systemName: symbol)
-                    .foregroundColor(isActive ? .teal : .secondary)
-                    .symbolRenderingMode(.hierarchical)
-                    .font(.title3.weight(.bold))
-
+                Text(stageNumber, format: .number)
+                    .font(.body.weight(.bold).monospacedDigit())
+                    .foregroundColor(Color.accentColor)
+                    .padding(.horizontal, 4)
+                
                 Text(description)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.body.weight(.semibold))
                     .foregroundColor(.primary)
             }
             .padding()
-            .background(isActive ? .teal.opacity(0.15) : .clear)
+            .fixedSize(horizontal: false, vertical: true)
+            .background(isActive ? Color.accentColor.opacity(0.15) : .clear)
             .cornerRadius(8)
         }
     }
