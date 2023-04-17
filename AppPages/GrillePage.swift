@@ -10,14 +10,8 @@ import SwiftUI
 struct GrillePage: View {
     @EnvironmentObject var state: AppState
     
-    @State private var answer: String = ""
-    
-    private var solved: Bool {
-        answer.uppercased() == state.solution
-    }
-    
     var body: some View {
-        SplitView(page: .three, disabled: !solved) {
+        SplitView(page: .three, disabled: false) {
             VStack(alignment: .leading) {
                 Text(state.decrypted)
                     .font(.title3.monospaced())
@@ -72,17 +66,6 @@ struct GrillePage: View {
                 }
                 .foregroundColor(.secondary)
                 .padding()
-                
-                TextField("Enter the key here...", text: $answer)
-                    .textInputAutocapitalization(.characters)
-                    .disableAutocorrection(true)
-                    .font(.body.monospaced())
-                    .padding()
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .strokeBorder(.quaternary, lineWidth: 1)
-                    }
-                    .padding([.horizontal, .bottom])
             }
         }
     }

@@ -17,6 +17,8 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
     
     @State private var aboutSheetShown: Bool = false
     
+    @State private var answer: String = ""
+    
     private var actionName: String {
         if page == .four {
             return "Play Again"
@@ -120,20 +122,48 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                         .padding()
                 }
                 
-                Button(action: action) {
-                    HStack {
-                        Text(actionName)
-                            .font(.body.bold())
-                        Spacer()
-                        Image(systemName: actionSymbol)
-                            .font(.body.bold())
+                if page != .three {
+                    Button(action: action) {
+                        HStack {
+                            Text(actionName)
+                                .font(.body.bold())
+                            Spacer()
+                            Image(systemName: actionSymbol)
+                                .font(.body.bold())
+                        }
+                        .padding(8)
+                        .frame(maxWidth: .infinity)
                     }
-                    .padding(8)
-                    .frame(maxWidth: .infinity)
+                    .disabled(disabled)
+                    .buttonStyle(.borderedProminent)
+                    .tint(.teal)
+                } else {
+                    HStack {
+                        TextField("Enter the key here...", text: $answer)
+                            .textInputAutocapitalization(.characters)
+                            .disableAutocorrection(true)
+                            .font(.body.monospaced())
+                            .padding()
+                            .background {
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .strokeBorder(.thinMaterial, lineWidth: 1)
+                            }
+                        
+                        Button(action: state.nextPage) {
+                            HStack {
+                                Text("Finish")
+                                    .font(.body.bold())
+                                
+                                Image(systemName: actionSymbol)
+                                    .font(.body.bold())
+                            }
+                            .padding(8)
+                        }
+                        .disabled(answer.uppercased() != state.solution)
+                        .buttonStyle(.borderedProminent)
+                        .tint(.teal)
+                    }
                 }
-                .disabled(disabled)
-                .buttonStyle(.borderedProminent)
-                .tint(.teal)
             }
             .frame(maxWidth: .infinity)
         }
