@@ -8,73 +8,80 @@
 import SwiftUI
 
 struct CaesarWheel: View {
-    @Environment(\.colorScheme) private var colorScheme
-    let characters: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    @Binding var shift: Int
     
     @State private var currentAngle: Angle = .degrees(0)
     @State private var finalAngle: Angle = .degrees(-0.1)
     
-    @Binding var shift: Int
+    @Environment(\.colorScheme) private var colorScheme
     
-    func updateShift() {
-        let totalDegrees = (currentAngle + finalAngle).degrees - (180.0/Double(characters.count))
-        let calc = floor(totalDegrees / (360.0 / Double(characters.count)))
-        let result = Int(calc + 1) * -1
-        
-        self.shift = (26 + (result % 26)) % 26
-    }
+    private let characters: [String] = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
     private var firstShiftedLetter: String {
         cshift(message: "A", by: shift)
+    }
+    
+    private let size: Double = 360
+    private let spacing: Double = 40
+    
+    private var innerSize: Double {
+        size - 2*spacing
+    }
+    
+    private var arcAngle: Double {
+        size / Double(characters.count)
+    }
+    
+    private func updateShift() {
+        let totalDegrees = (currentAngle + finalAngle).degrees - (arcAngle/2)
+        let calc = floor(totalDegrees / arcAngle)
+        let result = Int(calc + 1) * -1
+        
+        let count = characters.count
+        
+        self.shift = (count + (result % count)) % count
     }
     
     var body: some View {
         ZStack {
             Circle()
                 .fill(colorScheme == .dark ? Color(.systemGray6) : Color(.systemGray4))
-                .frame(width: 360, height: 360)
+                .frame(width: size, height: size)
                 .overlay {
                     ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
-                        let angle = Double(index) * (360.0 / Double(characters.count))
-                        let numericalOffset: Double = Double(index) - 0.5
-                        let lineAngle = numericalOffset * (360.0 / Double(characters.count))
+                        let angle = Double(index) * arcAngle
+                        let lineAngle = Double(index) * arcAngle - arcAngle/2
                         
                         Text(char)
                             .font(.body.monospaced().weight(.semibold))
-                            .rotationEffect(.degrees(90))
-                            .offset(x: 150 + 8)
-                            .rotationEffect(.degrees(-90))
+                            .offset(y: -size/2 + 20)
                             .rotationEffect(.degrees(angle))
                         
-                        
                         Rectangle()
+                            .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray2))
                             .frame(width: 1)
                             .rotationEffect(.degrees(lineAngle))
-                            .opacity(0.05)
                     }
                 }
                 .overlay {
                     Circle()
                         .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
-                        .frame(width: 280, height: 280)
+                        .frame(width: innerSize, height: innerSize)
                         .overlay {
                             ForEach(Array(characters.enumerated()), id: \.offset) { index, char in
-                                let angle: Double = Double(index) * (360.0 / Double(characters.count))
-                                let numericalOffset: Double = Double(index) - 0.5
-                                let lineAngle: Double = numericalOffset * (360.0 / Double(characters.count))
+                                let angle: Double = Double(index) * arcAngle
+                                let lineAngle = Double(index) * arcAngle - arcAngle/2
                                 
                                 Text(char)
                                     .font(.body.monospaced().weight(.semibold))
-                                    .rotationEffect(.degrees(90))
-                                    .offset(x: 150 - 24)
-                                    .rotationEffect(.degrees(-90))
+                                    .offset(y: -innerSize/2 + 15)
                                     .rotationEffect(.degrees(angle))
                                     .foregroundColor(char == firstShiftedLetter ? .primary : .secondary)
                                 
                                 Rectangle()
+                                    .fill(colorScheme == .dark ? Color(.systemGray3) : Color(.systemGray5))
                                     .frame(width: 1)
                                     .rotationEffect(.degrees(lineAngle))
-                                    .opacity(0.1)
                             }
                         }
                         .rotationEffect(currentAngle + finalAngle)
@@ -92,29 +99,39 @@ struct CaesarWheel: View {
                         )
                 }
                 .overlay {
-                    Circle()
-                        .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
-                        .frame(width: 150, height: 150)
-                        .overlay {
-                            Circle()
-                                .strokeBorder(.quaternary, lineWidth: 1)
+                    ZStack {
+                        Circle()
+                            .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
+                            .frame(width: innerSize/1.75, height: innerSize/1.75)
+                        
+                        Circle()
+                            .strokeBorder(colorScheme == .dark ? Color(.systemGray3) : Color(.systemGray5), lineWidth: 1)
+                            .frame(width: innerSize/1.75, height: innerSize/1.75)
+                    }
+                }
+                .overlay {
+                    Button {
+                        shift = 0
+                        withAnimation {
+                            currentAngle = .degrees(0)
+                            finalAngle = .degrees(-0.1)
                         }
-                        .onTapGesture {
-                            shift = 0
-                            withAnimation {
-                                currentAngle = .degrees(0)
-                                finalAngle = .degrees(-0.1)
+                    } label: {
+                        Circle()
+                            .fill(.clear)
+                            .frame(width: size/2.5, height: size/2.5)
+                            .overlay {
+                                Text(shift, format: .number)
+                                    .font(.title3.monospaced().bold())
+                                    .animation(.none, value: shift)
+                                    .foregroundColor(.primary)
                             }
-                        }
-                    
-                    Text(shift, format: .number)
-                        .font(.title3.monospaced().bold())
-                        .animation(.none, value: shift)
+                    }
                 }
             
             Button {
                 withAnimation {
-                    finalAngle -= .degrees(360.0 / Double(characters.count))
+                    finalAngle -= .degrees(arcAngle)
                     
                     updateShift()
                 }
@@ -123,12 +140,12 @@ struct CaesarWheel: View {
                     .font(.title.weight(.semibold))
                     .symbolRenderingMode(.hierarchical)
             }
-            .offset(x: -(180 + 24))
+            .offset(x: -(size/2 + 24))
             .rotationEffect(.degrees(-45))
             
             Button {
                 withAnimation {
-                    finalAngle += .degrees(360.0 / Double(characters.count))
+                    finalAngle += .degrees(arcAngle)
                     
                     updateShift()
                 }
@@ -137,7 +154,7 @@ struct CaesarWheel: View {
                     .font(.title.weight(.semibold))
                     .symbolRenderingMode(.hierarchical)
             }
-            .offset(x: 180 + 24)
+            .offset(x: size/2 + 24)
             .rotationEffect(.degrees(45))
         }
     }
