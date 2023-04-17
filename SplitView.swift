@@ -74,7 +74,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                         .padding(.horizontal, 2)
                     
                     Rectangle()
-                        .fill(.teal.opacity(0.2))
+                        .fill(Color.accentColor.opacity(0.2))
                         .frame(width: 2)
                         .padding(.horizontal)
                     
@@ -103,7 +103,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
-                .background(.mint.opacity(0.15))
+                .background(Color.accentColor.opacity(0.15))
                 .cornerRadius(8)
                 
                 ScrollView(showsIndicators: false) {
@@ -116,7 +116,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
             VStack {
                 ZStack {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .strokeBorder(.mint.opacity(0.2), lineWidth: 1)
+                        .strokeBorder(Color.accentColor.opacity(0.2), lineWidth: 1)
                     
                     trailing()
                         .padding()
@@ -126,12 +126,13 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                     Button(action: action) {
                         HStack {
                             Text(actionName)
-                                .font(.body.bold())
+                            
                             Spacer()
+                            
                             Image(systemName: actionSymbol)
-                                .font(.body.bold())
                         }
                         .padding(8)
+                        .font(.body.bold())
                         .frame(maxWidth: .infinity)
                     }
                     .disabled(disabled)
@@ -152,11 +153,10 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                         Button(action: state.nextPage) {
                             HStack {
                                 Text("Finish")
-                                    .font(.body.bold())
                                 
                                 Image(systemName: actionSymbol)
-                                    .font(.body.bold())
                             }
+                            .font(.body.bold())
                             .padding(8)
                         }
                         .disabled(answer.uppercased() != state.solution)
