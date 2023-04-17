@@ -79,7 +79,7 @@ struct CaesarPage: View {
                     Image(systemName: "arrow.triangle.2.circlepath")
                         .font(.body.bold())
                     
-                    Text("Use two fingers to rotate the inner wheel, or use the arrows.")
+                    Text("Use two fingers to rotate the inner wheel, or use the arrows. Tap the center to reset.")
                         .font(.callout.monospaced())
                 }
                 .foregroundColor(.secondary)

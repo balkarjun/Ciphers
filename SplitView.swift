@@ -50,19 +50,8 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
         }
     }
     
-    private var pageSymbol: String {
-        switch page {
-        case .zero:
-            return "0.circle.fill"
-        case .one:
-            return "1.circle.fill"
-        case .two:
-            return "2.circle.fill"
-        case .three:
-            return "3.circle.fill"
-        case .four:
-            return "4.circle.fill"
-        }
+    private var pageNumber: Int {
+        page.rawValue + 1
     }
     
     private func action() {
@@ -76,10 +65,16 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
     var body: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 0) {
-                HStack {
-                    Image(systemName: pageSymbol)
-                        .font(.body.weight(.bold))
-                        .foregroundColor(.teal)
+                HStack(spacing: 0) {
+                    Text(pageNumber, format: .number)
+                        .font(.body.weight(.bold).monospacedDigit())
+                        .foregroundColor(Color.accentColor)
+                        .padding(.horizontal, 2)
+                    
+                    Rectangle()
+                        .fill(.teal.opacity(0.2))
+                        .frame(width: 2)
+                        .padding(.horizontal)
                     
                     Text(pageName)
                         .font(.body.weight(.semibold))
@@ -98,11 +93,14 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                         }
                     } label: {
                         Image(systemName: "ellipsis.circle")
-                            .font(.body.weight(.semibold))
+                            .font(.title3.weight(.semibold))
+                            .symbolRenderingMode(.hierarchical)
                     }
+                    .padding(.vertical)
                 }
-                .padding()
+                .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
                 .background(.mint.opacity(0.15))
                 .cornerRadius(8)
                 
