@@ -16,12 +16,12 @@ struct CaesarPage: View {
         cshift(message: state.encrypted, by: shift)
     }
     
-    private var isNextPageDisabled: Bool {
-        shifted != state.decrypted
+    private var solved: Bool {
+        shifted == state.decrypted
     }
     
     var body: some View {
-        SplitView(page: .two, disabled: isNextPageDisabled) {
+        SplitView(page: .two, disabled: !solved) {
             VStack(alignment: .leading) {
                 Text(state.encrypted)
                     .font(.title3.monospaced())

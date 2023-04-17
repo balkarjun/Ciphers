@@ -16,8 +16,8 @@ struct PigpenPage: View {
     
     @Environment(\.colorScheme) private var colorScheme
     
-    private var isNextPageDisabled: Bool {
-        highlighted != ""
+    private var solved: Bool {
+        highlighted == ""
     }
     
     private var pigpenColor: Color {
@@ -25,7 +25,7 @@ struct PigpenPage: View {
     }
     
     var body: some View {
-        SplitView(page: .one, disabled: isNextPageDisabled) {
+        SplitView(page: .one, disabled: !solved) {
             VStack(alignment: .leading) {
                 HStack(spacing: 0) {
                     PigpenText(

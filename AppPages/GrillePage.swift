@@ -12,12 +12,12 @@ struct GrillePage: View {
     
     @State private var answer: String = ""
     
-    private var isNextPageDisabled: Bool {
-        answer.uppercased() != state.solution
+    private var solved: Bool {
+        answer.uppercased() == state.solution
     }
     
     var body: some View {
-        SplitView(page: .three, disabled: isNextPageDisabled) {
+        SplitView(page: .three, disabled: !solved) {
             VStack(alignment: .leading) {
                 Text(state.decrypted)
                     .font(.title3.monospaced())
