@@ -17,13 +17,17 @@ struct CaesarWheel: View {
     @Binding var shift: Int
     
     func updateShift() {
-        let totalDegrees = (currentAngle + finalAngle).degrees
+        let totalDegrees = (currentAngle + finalAngle).degrees - (180.0/Double(characters.count))
         let calc = floor(totalDegrees / (360.0 / Double(characters.count)))
         let result = Int(calc + 1) * -1
         
         self.shift = (26 + (result % 26)) % 26
     }
-
+    
+    private var firstShiftedLetter: String {
+        cshift(message: "A", by: shift)
+    }
+    
     var body: some View {
         ZStack {
             Circle()
@@ -65,6 +69,7 @@ struct CaesarWheel: View {
                                     .offset(x: 150 - 24)
                                     .rotationEffect(.degrees(-90))
                                     .rotationEffect(.degrees(angle))
+                                    .foregroundColor(char == firstShiftedLetter ? .primary : .secondary)
                                 
                                 Rectangle()
                                     .frame(width: 1)
