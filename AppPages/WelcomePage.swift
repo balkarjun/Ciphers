@@ -20,7 +20,7 @@ struct WelcomePage: View {
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("A cryptic message where the letters have been replaced by symbols.")
                 
-                Text("A cipher is a way to disguise a message and conceal it's meaning. Hidden within the cryptic message above is a secret keyword that we're interested in.\n\nThrough a series of interactive tutorials, we will learn about the various ciphers that were used to encode this message and decode it one step at a time to find the hidden keyword.")
+                Text("A cipher is a way to disguise a message and conceal it's meaning. Hidden within the cryptic message above is a secret keyword that we're interested in.\n\nThrough a series of interactive tutorials, we will learn about the various ciphers that were used to encode this message and decipher it one step at a time to find the keyword.")
                     .padding()
                 
                 HStack {
@@ -43,11 +43,15 @@ struct WelcomePage: View {
                     .padding(.bottom)
                     .accessibilityHidden(true)
                 
-                Text("Interactive Area")
-                    .font(.body.weight(.semibold))
-                Text("Tools to solve the cipher will be presented here")
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
+                VStack {
+                    Text("Interactive Area")
+                        .font(.body.weight(.semibold))
+                    
+                    Text("Tools to solve the cipher will be presented here")
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+                .accessibilityElement(children: .combine)
             }
         }
     }

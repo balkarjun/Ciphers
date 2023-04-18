@@ -61,7 +61,7 @@ struct PigpenPage: View {
                     description: "Using the keyboard in the interactive area, tap on the matching letter for the symbol highlighted above, to make sense of this cryptic message."
                 )
                 
-                Text("This is the **Pigpen Cipher** in which each letter in the message is replaced by a symbol. Here's an example:")
+                Text("This is the **Pigpen Cipher** where each letter in the message is replaced by a symbol. Here's an example:")
                     .padding()
                 
                 HStack(spacing: 0) {
@@ -82,9 +82,8 @@ struct PigpenPage: View {
                 .frame(maxWidth: .infinity)
                 .padding(.bottom)
                                 
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("To decode this message, we need to find the matching letter for each symbol. You can find the symbol for each letter from the lines surrounding that letter in the keyboard grid, in the interactive area to your right.")
-                        .padding(.bottom)
+                VStack(alignment: .leading) {
+                    Text("To decipher this message, we need to find the matching letter for each symbol. You can find this symbol from the lines surrounding that letter in the keyboard grid, in the interactive area to your right.")
                     
                     HStack {
                         Text("P")
@@ -92,7 +91,7 @@ struct PigpenPage: View {
                         
                         PigpenCharacter("P", lineColor: pigpenColor)
                         
-                        Text("For example, the letter ***P*** is surrounded by lines to the top and to the right, and also contains a circular dot.")
+                        Text("For example, the letter ***P*** is surrounded by lines to the top and to the right, and contains a dot.")
                             .padding(.leading)
                     }
                     
@@ -123,7 +122,7 @@ struct PigpenPage: View {
                             .foregroundColor(.primary)
                     }
                     
-                    Text("The first letter in the message is ***F***, so start by tapping on the letter F in the keyboard grid in the interactive area.")
+                    Text("F is the first letter in this message. Start by pressing **F** on the keyboard in the interactive area.")
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)

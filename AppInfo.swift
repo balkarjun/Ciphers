@@ -15,7 +15,7 @@ struct AppInfo: View {
             Text("Ciphers")
                 .font(.title.bold())
             
-            Text("Decode the cryptic message to find the secret keyword, \nand learn about some ciphers along the way.")
+            Text("Decipher the cryptic message to find the hidden keyword, \nand learn about some ciphers along the way.")
             
             Divider()
                 .padding(.vertical)

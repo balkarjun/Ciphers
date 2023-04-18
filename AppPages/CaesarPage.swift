@@ -49,7 +49,7 @@ struct CaesarPage: View {
                     description: "Turn the wheel in the interactive area to shift each letter in the message, until it becomes readable."
                 )
                 
-                Text("We've replaced the pigpen symbols with their matching letters, but the message still doesn't make sense.\n\nThat's because this message is encoded using a ***Caesar Cipher***, where each letter is replaced by another letter some fixed number of positions down the alphabet. Here's an example:")
+                Text("We've replaced the pigpen symbols with their matching letters, but the message still doesn't make sense.\n\nThat's because this message is encoded using a ***Caesar Cipher***, where each letter is replaced by some other letter a fixed number of positions down the alphabet. Here's an example:")
                 .padding()
                 
                 HStack(spacing: 16) {
@@ -67,11 +67,11 @@ struct CaesarPage: View {
                     }
                     .accessibilityElement(children: .combine)
                     
-                    Text("Here, each letter of the word APPLE is shifted by 1 position. **A** is shifted to **B**, **L** is shifted to **M**, and so on..")
+                    Text("Here, each letter of the word APPLE is shifted by 1 position.\n**A** is shifted to **B**, **L** is shifted to **M**, and so on..")
                 }
                 .padding(.horizontal)
                 
-                Text("To decode the message, we simply shift it back by the same number of positions.")
+                Text("To decipher this message, we simply shift it back by the same number of positions.")
                     .padding()
             }
         } trailing: {

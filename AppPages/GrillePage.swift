@@ -24,10 +24,10 @@ struct GrillePage: View {
                 
                 InteractionPrompt(
                     title: "Find the Secret Keyword",
-                    description: "Align the stencil with the text to uncover the secret keyword. Once you find it, type it into the text field."
+                    description: "Align the stencil with the text to uncover the keyword. Once you find it, type it into the text field."
                 )
                 
-                Text("The message is now readable, but how do we find the secret keyword? It is hidden in the message itself.\n\nThis is called Steganography, and the message above uses a ***Grille Cipher***, where the secret becomes visible when the message is viewed through a stencil or a piece of paper with holes in it.\n\nWe simply need to view the message using the stencil, and decode the message by reading out the revealed letters.")
+                Text("The message is now readable, but how do we find the secret keyword? It is hidden in the message itself.\n\nThis is called Steganography, and the message above uses a ***Grille Cipher***, where the secret becomes visible when the message is viewed through a stencil or a piece of paper with holes in it.\n\nWe simply need to view the message using the stencil, and decipher it by reading out the highlighted letters.")
                     .padding()
                 
                 VStack(alignment: .leading, spacing: 6) {
@@ -43,7 +43,7 @@ struct GrillePage: View {
                             .foregroundColor(.primary)
                     }
                     
-                    Text("Make sure you read what the message says.")
+                    Text("Pay attention to what the message says.")
                 }
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
