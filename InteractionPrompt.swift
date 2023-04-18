@@ -22,6 +22,7 @@ struct InteractionPrompt: View {
                     .symbolRenderingMode(.hierarchical)
                     .foregroundColor(.accentColor)
                     .font(.body.bold())
+                    .accessibilityHidden(true)
 
                 Text(description)
             }

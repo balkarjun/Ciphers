@@ -68,18 +68,22 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 0) {
                 HStack(spacing: 0) {
-                    Text(pageNumber, format: .number)
-                        .font(.body.weight(.bold).monospacedDigit())
-                        .foregroundColor(Color.accentColor)
-                        .padding(.horizontal, 2)
-                    
-                    Rectangle()
-                        .fill(Color.accentColor.opacity(0.2))
-                        .frame(width: 2)
-                        .padding(.horizontal)
-                    
-                    Text(pageName)
-                        .font(.body.weight(.semibold))
+                    HStack(spacing: 0) {
+                        Text(pageNumber, format: .number)
+                            .font(.body.weight(.bold).monospacedDigit())
+                            .foregroundColor(Color.accentColor)
+                            .padding(.horizontal, 2)
+                        
+                        Rectangle()
+                            .fill(Color.accentColor.opacity(0.2))
+                            .frame(width: 2)
+                            .padding(.horizontal)
+                        
+                        Text(pageName)
+                            .font(.body.weight(.semibold))
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Section \(pageNumber), \(pageName)")
                     
                     Spacer()
                     
@@ -105,6 +109,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .background(Color.accentColor.opacity(0.15))
                 .cornerRadius(8)
+                .accessibilityAddTraits(.isHeader)
                 
                 ScrollView(showsIndicators: false) {
                     leading()
@@ -138,6 +143,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                     .disabled(disabled)
                     .buttonStyle(.borderedProminent)
                     .tint(Color.accentColor)
+                    .accessibilityAddTraits(.isHeader)
                 } else {
                     HStack {
                         TextField("Enter the key here...", text: $answer)
@@ -163,6 +169,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
                         .buttonStyle(.borderedProminent)
                         .tint(Color.accentColor)
                     }
+                    .accessibilityAddTraits(.isHeader)
                 }
             }
             .frame(maxWidth: .infinity)

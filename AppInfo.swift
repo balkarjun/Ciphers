@@ -24,10 +24,13 @@ struct AppInfo: View {
                 .font(.body)
             
             VStack(alignment: .leading) {
-                Text("Arjun Balakrishnan")
-                    .font(.body.bold())
-                Text("Designer & Developer")
-                    .foregroundColor(.secondary)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Arjun Balakrishnan")
+                        .font(.body.bold())
+                    Text("Designer & Developer")
+                        .foregroundColor(.secondary)
+                }
+                .accessibilityElement(children: .combine)
                 
                 Link(destination: URL(string: "https://github.com/balkarjun")!) {
                     Label("GitHub", systemImage: "link")
