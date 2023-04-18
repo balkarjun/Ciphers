@@ -58,8 +58,8 @@ struct CaesarWheel: View {
                 .accessibilityHidden(true)
             
             ArcText(size: size)
-                .accessibilityElement(children: .ignore)
-            
+                .accessibilityHidden(true)
+
             Circle()
                 .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
                 .frame(width: innerSize, height: innerSize)
@@ -79,7 +79,6 @@ struct CaesarWheel: View {
                             .frame(width: 1)
                             .rotationEffect(.degrees(lineAngle))
                     }
-                    .accessibilityElement(children: .ignore)
                 }
                 .rotationEffect(currentAngle + finalAngle)
                 .gesture (
@@ -94,7 +93,7 @@ struct CaesarWheel: View {
                             currentAngle = .degrees(0)
                         }
                 )
-                .accessibilityElement(children: .ignore)
+                .accessibilityHidden(true)
 
             Circle()
                 .fill(colorScheme == .dark ? Color(.systemGray4) : Color(.systemGray6))
