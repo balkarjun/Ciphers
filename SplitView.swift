@@ -48,7 +48,7 @@ struct SplitView<LeadingView: View, TrailingView: View>: View {
         case .three:
             return "Grille Cipher"
         case .four:
-            return "Congratulations"
+            return "The End"
         }
     }
     

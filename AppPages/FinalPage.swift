@@ -7,15 +7,11 @@
 
 import SwiftUI
 
-enum ProgressStage {
-    case zero, one, two, three, four
-}
-
 struct FinalPage: View {
     @EnvironmentObject var state: AppState
     
+    @State private var stage: AppPage = .four
     @State private var screenWidth: Double = 0
-    @State private var stage: ProgressStage = .four
     
     @Environment(\.colorScheme) private var colorScheme
     
@@ -30,8 +26,30 @@ struct FinalPage: View {
         case .three:
             return state.blocked
         case .four:
-            return state.solution
+            let result = "...... ....... ..... .. ......\n.. MACINTOSH .. ...... ... ....\n..... .... .... ....."
+
+            return result
         }
+    }
+    
+    var isFirstStage: Bool {
+        stage.rawValue <= 0
+    }
+    
+    var isLastStage: Bool {
+        stage.rawValue >= AppPage.allCases.count - 1
+    }
+    
+    func nextStage() {
+        if isLastStage { return }
+        
+        stage = AppPage(rawValue: stage.rawValue + 1) ?? .four
+    }
+    
+    func prevStage() {
+        if isFirstStage { return }
+        
+        stage = AppPage(rawValue: stage.rawValue - 1) ?? .four
     }
     
     private var isPigpen: Bool {
@@ -42,12 +60,38 @@ struct FinalPage: View {
         (colorScheme == .dark) ? .white : .black
     }
     
+    private var description: String {
+        switch stage {
+        case .zero:
+            return "Original Message"
+        case .one:
+            return "After Pigpen Cipher"
+        case .two:
+            return "After Caesar Cipher"
+        case .three:
+            return "After Grille Cipher"
+        case .four:
+            return "Keyword"
+        }
+    }
+    
     var body: some View {
         SplitView(page: .four, disabled: false) {
             VStack(alignment: .leading) {
-                Text("**Congratulations!**\nUsing Pigpen, Caesar and Grille Ciphers, you decoded the message and found the secret key. Hope you had fun learning about these ciphers along the way.\n\nYou can view the results of each stage using the buttons to the right, or play again from the beginnning.")
-                    .padding()
+                Text("Congratulations!")
+                    .font(.body.bold())
+                    .padding(.horizontal)
                 
+                Text("Using Pigpen, Caesar and Grille Ciphers, you deciphered the message and found the keyword.\nHope you had fun solving these ciphers along the way.")
+                    .padding(.horizontal)
+                
+                Text("You can view the results of each stage, or play again from the beginnning.")
+                    .foregroundColor(.secondary)
+                    .padding(.top)
+                    .padding(.horizontal)
+            }
+        } trailing: {
+            VStack {
                 ChunkedText(
                     text: text,
                     limit: screenWidth
@@ -58,88 +102,45 @@ struct FinalPage: View {
                         } else {
                             Text(char)
                                 .font(.title3.monospaced().weight(.semibold))
+                                .foregroundColor(char == "." ? .secondary.opacity(0.5) : .primary)
                         }
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .center)
                 .overlay {
                     Color.clear.measureSize { screenWidth = $0.width }
                 }
                 .padding()
-                .background(.ultraThinMaterial)
+                .background(.thinMaterial)
                 .cornerRadius(8)
-            }
-        } trailing: {
-            VStack {
-                StageButton(stage: .zero, activeStage: $stage)
-
-                StageButton(stage: .one, activeStage: $stage)
-
-                StageButton(stage: .two, activeStage: $stage)
                 
-                StageButton(stage: .three, activeStage: $stage)
-                
-                StageButton(stage: .four, activeStage: $stage)
+                HStack {
+                    Button(action: prevStage) {
+                        Image(systemName: "arrow.left.circle.fill")
+                            .font(.title2.bold())
+                            .symbolRenderingMode(.hierarchical)
+                    }
+                    .disabled(isFirstStage)
+                    
+                    Text(description)
+                        .font(.callout.bold().monospaced())
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.secondary)
+                    
+                    Button(action: nextStage) {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .font(.title2.bold())
+                            .symbolRenderingMode(.hierarchical)
+                    }
+                    .disabled(isLastStage)
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+                .background(.thinMaterial)
+                .cornerRadius(8)
                 
                 Spacer()
             }
-        }
-    }
-}
-
-struct StageButton: View {
-    let stage: ProgressStage
-    
-    @Binding var activeStage: ProgressStage
-    
-    private var isActive: Bool {
-        stage == activeStage
-    }
-    
-    private var stageNumber: Int {
-        switch stage {
-        case .zero: return 1
-        case .one: return 2
-        case .two: return 3
-        case .three: return 4
-        case .four:return 5
-        }
-    }
-    
-    private var description: String {
-        switch stage {
-        case .zero:
-            return "Original Message"
-        case .one:
-            return "Deciphered using Pigpen"
-        case .two:
-            return "Deciphered using Caesar Shift"
-        case .three:
-            return "Deciphered using Grille"
-        case .four:
-            return "Secret Key"
-        }
-    }
-    
-    var body: some View {
-        Button {
-            activeStage = stage
-        } label: {
-            HStack {
-                Text(stageNumber, format: .number)
-                    .font(.body.weight(.bold).monospacedDigit())
-                    .foregroundColor(Color.accentColor)
-                    .padding(.horizontal, 4)
-                
-                Text(description)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.body.weight(.semibold))
-                    .foregroundColor(.primary)
-            }
-            .padding()
-            .fixedSize(horizontal: false, vertical: true)
-            .background(isActive ? Color.accentColor.opacity(0.15) : .clear)
-            .cornerRadius(8)
         }
     }
 }
