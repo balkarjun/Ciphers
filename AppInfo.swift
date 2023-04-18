@@ -8,38 +8,43 @@
 import SwiftUI
 
 struct AppInfo: View {
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Ciphers")
                 .font(.title.bold())
             
             Text("Decode the cryptic message to find the secret keyword, \nand learn about some ciphers along the way.")
-
+            
             Divider()
                 .padding(.vertical)
             
             Text("Thank you for checking out this little app that I put a lot of effort into.\nCiphers was built over the course of 2 weeks as my submission to the WWDC23 Swift Student Challenge.")
                 .font(.body)
             
-            HStack {
-                Link(destination: URL(string: "https://github.com/balkarjun")!) {
-                    Image(systemName: "link")
-                        .font(.body.bold())
-                        .padding(12)
-                        .background(Color.accentColor.opacity(0.1))
-                        .cornerRadius(8)
-                }
+            VStack(alignment: .leading) {
+                Text("Arjun Balakrishnan")
+                    .font(.body.bold())
+                Text("Designer & Developer")
+                    .foregroundColor(.secondary)
                 
-                VStack(alignment: .leading) {
-                    Text("Arjun Balakrishnan")
+                Link(destination: URL(string: "https://github.com/balkarjun")!) {
+                    Label("GitHub", systemImage: "link")
                         .font(.body.bold())
-                    Text("Designer & Developer")
-                        .foregroundColor(.secondary)
+                        .symbolRenderingMode(.hierarchical)
                 }
+                .buttonStyle(.bordered)
+                .tint(.accentColor)
             }
             .padding(.top)
             
             Spacer()
+            
+            Button("Close") {
+                dismiss()
+            }
+            .font(.body.bold())
         }
         .padding()
         .padding()
