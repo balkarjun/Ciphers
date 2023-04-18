@@ -94,8 +94,9 @@ struct FinalPage: View {
         SplitView(page: .four, disabled: false) {
             VStack(alignment: .leading) {
                 Text("Congratulations!")
-                    .font(.body.bold())
+                    .font(.title2.bold())
                     .padding(.horizontal)
+                    .padding(.top, 8)
                 
                 Text("Using Pigpen, Caesar and Grille Ciphers, you deciphered the message and found the keyword.\nHope you had fun solving these ciphers along the way.")
                     .padding(.horizontal)
