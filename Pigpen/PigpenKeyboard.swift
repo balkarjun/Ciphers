@@ -45,14 +45,17 @@ struct PigpenSquareKeyboard: View {
                                 .font(.title2.monospaced().bold())
                                 .foregroundColor(.primary)
                                 .frame(width: width/3, height: height/3)
+                                .accessibilityLabel(character.lowercased())
                             
                             Circle()
                                 .fill(Color.accentColor)
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(dotted ? 1 : 0)
                                 .offset(x: width/12)
+                                .accessibilityLabel(getPigpenAccessibilityLabel(for: character))
                         }
                         .background(backgroundColor)
+                        .accessibilityElement(children: .combine)
                     }
                     .offset(x: xOffset, y: yOffset)
                 }
@@ -127,15 +130,18 @@ struct PigpenTriangleKeyboard: View {
                                 .foregroundColor(.primary)
                                 .frame(width: width/2, height: height/2)
                                 .rotationEffect(.degrees(-45))
-                            
+                                .accessibilityLabel(character.lowercased())
+
                             Circle()
                                 .fill(Color.accentColor)
                                 .frame(width: dotSize, height: dotSize)
                                 .opacity(dotted ? 1 : 0)
                                 .offset(x: width/6)
                                 .rotationEffect(.degrees(dotOffset(row: rowNumber, col: colNumber)))
+                                .accessibilityLabel(getPigpenAccessibilityLabel(for: character))
                         }
                         .background(backgroundColor)
+                        .accessibilityElement(children: .combine)
                     }
                     .offset(x: xOffset, y: yOffset)
                 }

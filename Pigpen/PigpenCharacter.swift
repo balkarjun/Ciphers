@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-enum PigDirection {
-    case top, right, bottom, left
+enum PigDirection: String {
+    case top    = "top"
+    case right  = "right"
+    case bottom = "bottom"
+    case left   = "left"
 }
 
 func isPigSquare(_ character: String) -> Bool {
@@ -23,34 +26,59 @@ func isPigDotted(_ character: String) -> Bool {
     return dottedCharacters.contains(character)
 }
 
-let PigDirections: [String : Set<PigDirection>] = [
+let PigDirections: [String : [PigDirection]] = [
     "A": [.right, .bottom],
-    "B": [.left, .bottom, .right],
-    "C": [.left, .bottom],
+    "B": [.right, .bottom, .left],
+    "C": [.bottom, .left],
     "D": [.top, .right, .bottom],
     "E": [.top, .right, .bottom, .left],
-    "F": [.top, .left, .bottom],
+    "F": [.bottom, .left, .top],
     "G": [.top, .right],
     "H": [.left, .top, .right],
     "I": [.left, .top],
+    
     "J": [.right, .bottom],
-    "K": [.left, .bottom, .right],
-    "L": [.left, .bottom],
+    "K": [.right, .bottom, .left],
+    "L": [.bottom, .left],
     "M": [.top, .right, .bottom],
     "N": [.top, .right, .bottom, .left],
-    "O": [.top, .left, .bottom],
+    "O": [.bottom, .left, .top],
     "P": [.top, .right],
     "Q": [.left, .top, .right],
     "R": [.left, .top],
+    
     "S": [.bottom],
     "T": [.right],
     "U": [.left],
     "V": [.top],
+    
     "W": [.bottom],
     "X": [.right],
     "Y": [.left],
     "Z": [.top],
 ]
+
+func getPigpenAccessibilityLabel(for character: String) -> String {
+    if character == " " { return "space" }
+    if character == "," { return "comma" }
+    
+    let isSquare = isPigSquare(character)
+    let isDotted = isPigDotted(character)
+    
+    let directions = PigDirections[character] ?? [.right, .bottom]
+    
+    var result = isSquare ? "square" : "diamond"
+    
+    for direction in directions {
+        result += ", \(direction.rawValue)"
+    }
+    
+    if isDotted {
+        result += ", dotted"
+    }
+    
+    return result
+}
 
 struct PigpenCharacter: View {
     private let character: String
@@ -74,7 +102,7 @@ struct PigpenCharacter: View {
         isPigSquare(self.character)
     }
     
-    private var directions: Set<PigDirection> {
+    private var directions: [PigDirection] {
         PigDirections[self.character] ?? [.right, .bottom]
     }
     
@@ -89,6 +117,10 @@ struct PigpenCharacter: View {
         case .bottom: return 180
         case .left:   return 270
         }
+    }
+    
+    private var accessibilityLabel: String {
+        getPigpenAccessibilityLabel(for: character)
     }
     
     var body: some View {
@@ -152,6 +184,8 @@ struct PigpenCharacter: View {
                     .foregroundColor(.secondary)
                     .opacity(isSpecial ? 1 : 0)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(accessibilityLabel)
     }
 }
 
