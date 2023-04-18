@@ -32,6 +32,21 @@ struct FinalPage: View {
         }
     }
     
+    private var accessibilityLabel: String {
+        switch stage {
+        case .zero:
+            return "Original Message encoded using Pigpen Cipher"
+        case .one:
+            return "Message encoded using Caesar Cipher"
+        case .two:
+            return state.decrypted
+        case .three:
+            return "Message after being viewed through the stencil reads: 'H' 'S' 'O' 'T' 'N' 'I' 'C' 'A' 'M'"
+        case .four:
+            return state.solution
+        }
+    }
+    
     var isFirstStage: Bool {
         stage.rawValue <= 0
     }
@@ -113,12 +128,15 @@ struct FinalPage: View {
                 .padding()
                 .background(.thinMaterial)
                 .cornerRadius(8)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(accessibilityLabel)
                 
                 HStack {
                     Button(action: prevStage) {
-                        Image(systemName: "arrow.left.circle.fill")
+                        Label("View Previous Stage Result", systemImage: "arrow.left.circle.fill")
                             .font(.title2.bold())
                             .symbolRenderingMode(.hierarchical)
+                            .labelStyle(.iconOnly)
                     }
                     .disabled(isFirstStage)
                     
@@ -128,9 +146,10 @@ struct FinalPage: View {
                         .foregroundColor(.secondary)
                     
                     Button(action: nextStage) {
-                        Image(systemName: "arrow.right.circle.fill")
+                        Label("View Next Stage Result", systemImage: "arrow.right.circle.fill")
                             .font(.title2.bold())
                             .symbolRenderingMode(.hierarchical)
+                            .labelStyle(.iconOnly)
                     }
                     .disabled(isLastStage)
                 }
