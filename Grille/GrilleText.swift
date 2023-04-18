@@ -17,6 +17,9 @@ struct GrilleText: View {
             Text(char)
                 .font(.title3.monospaced().weight(.semibold))
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("When viewed through the stencil, the message reads: 'H' 'S' 'O' 'T' 'N' 'I' 'C' 'A' 'M'")
+        .accessibilityAddTraits(.isHeader)
         .frame(maxWidth: .infinity)
         .overlay {
             Color.clear.measureSize { screenWidth = $0.width }
@@ -24,6 +27,7 @@ struct GrilleText: View {
         .overlay {
             GrillePaper(limit: screenWidth)
                 .blendMode(.exclusion)
+                .accessibilityHidden(true)
         }
     }
 }

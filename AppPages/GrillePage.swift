@@ -20,6 +20,7 @@ struct GrillePage: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(.thinMaterial)
                     .cornerRadius(8)
+                    .accessibilityAddTraits(.isHeader)
                 
                 InteractionPrompt(
                     title: "Find the Secret Keyword",
@@ -35,6 +36,7 @@ struct GrillePage: View {
                             .symbolRenderingMode(.hierarchical)
                             .foregroundColor(.primary)
                             .font(.body.bold())
+                            .accessibilityHidden(true)
                         
                         Text("Hint")
                             .font(.subheadline.weight(.semibold))
@@ -65,6 +67,7 @@ struct GrillePage: View {
                         .font(.callout.monospaced())
                 }
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
                 
                 HStack {
                     Image(systemName: "hand.point.up.left")
@@ -76,6 +79,7 @@ struct GrillePage: View {
                 }
                 .foregroundColor(.secondary)
                 .padding()
+                .accessibilityHidden(true)
             }
         }
     }
